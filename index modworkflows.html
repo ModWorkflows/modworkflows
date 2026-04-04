@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ModWorkflows — Create Your Legacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#080808;--surface:#111111;--surface2:#181818;
+  --border:rgba(255,255,255,0.07);--border-hover:rgba(139,92,246,0.4);
+  --purple:#8b5cf6;--purple-light:#a78bfa;--purple-dim:rgba(139,92,246,0.12);
+  --gold:#f5c842;--gold-dim:rgba(245,200,66,0.1);--gold-border:rgba(245,200,66,0.3);
+  --teal:#00e5a0;--teal-dim:rgba(0,229,160,0.08);--teal-border:rgba(0,229,160,0.2);
+  --blue:#0099ff;--blue-dim:rgba(0,153,255,0.08);--blue-border:rgba(0,153,255,0.2);
+  --text:#f5f5f5;--muted:#888;--muted2:#555;
+  --font-display:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.6;overflow-x:hidden;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(8,8,8,0.92);backdrop-filter:blur(16px);}
+.nav-logo{display:flex;align-items:center;gap:12px;cursor:pointer;}
+.nav-logo-lockup{display:flex;flex-direction:column;gap:1px;}
+.nav-logo-text{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--text);letter-spacing:-0.02em;line-height:1;}
+.nav-logo-text span{color:var(--purple);}
+.nav-by{font-size:10px;color:var(--muted2);letter-spacing:0.08em;}
+.nav-links{display:flex;align-items:center;gap:2rem;}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;font-weight:400;transition:color 0.2s;cursor:pointer;}
+.nav-links a:hover,.nav-links a.active{color:var(--text);}
+.nav-links a.active{color:var(--purple-light);}
+.nav-cta{background:var(--purple);color:#fff;border:none;padding:9px 22px;border-radius:6px;font-size:13px;font-family:var(--font-body);font-weight:500;cursor:pointer;transition:opacity 0.2s;}
+.nav-cta:hover{opacity:0.85;}
+.page{display:none;}
+.page.active{display:block;}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 5rem;position:relative;overflow:hidden;}
+.hero-glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(ellipse,rgba(139,92,246,0.2) 0%,transparent 70%);pointer-events:none;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--purple-dim);border:1px solid rgba(139,92,246,0.3);color:var(--purple-light);font-size:11px;font-weight:500;padding:5px 16px;border-radius:99px;margin-bottom:2rem;letter-spacing:0.08em;text-transform:uppercase;animation:fadeUp 0.6s ease both;}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--purple);display:inline-block;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
+.hero h1{font-family:var(--font-display);font-size:clamp(2.8rem,6vw,5.5rem);font-weight:800;line-height:1.05;letter-spacing:-0.03em;margin-bottom:0.75rem;animation:fadeUp 0.6s 0.1s ease both;}
+.hero h1 em{font-style:normal;color:var(--purple);}
+.tagline{font-family:var(--font-display);font-size:clamp(1rem,1.8vw,1.25rem);font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:var(--purple-light);margin-bottom:0.6rem;animation:fadeUp 0.6s 0.15s ease both;}
+.hero-byline{font-size:12px;color:var(--muted2);letter-spacing:0.12em;margin-bottom:2rem;animation:fadeUp 0.6s 0.2s ease both;}
+.hero-byline span{color:var(--muted);cursor:default;transition:color 0.2s;}
+.hero-byline span:hover{color:var(--purple-light);}
+.hero p{font-size:1.05rem;color:var(--muted);max-width:540px;margin:0 auto 2.5rem;font-weight:300;line-height:1.85;animation:fadeUp 0.6s 0.25s ease both;}
+.hero-actions{display:flex;align-items:center;gap:12px;animation:fadeUp 0.6s 0.3s ease both;}
+.btn-primary{background:var(--purple);color:#fff;border:none;padding:14px 30px;border-radius:8px;font-size:14px;font-family:var(--font-body);font-weight:500;cursor:pointer;transition:all 0.2s;}
+.btn-primary:hover{background:var(--purple-light);transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border);padding:14px 30px;border-radius:8px;font-size:14px;font-family:var(--font-body);font-weight:400;cursor:pointer;transition:all 0.2s;}
+.btn-ghost:hover{border-color:var(--border-hover);color:var(--text);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.stats-bar{display:flex;justify-content:center;gap:4rem;padding:2.5rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);}
+.stat{text-align:center;}
+.stat-num{font-family:var(--font-display);font-size:2rem;font-weight:800;}
+.stat-num span{color:var(--purple);}
+.stat-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:3px;}
+.sect{padding:7rem 2.5rem;max-width:1100px;margin:0 auto;}
+.sect-label{font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:1rem;}
+.sect-title{font-family:var(--font-display);font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-0.02em;line-height:1.1;margin-bottom:1rem;}
+.sect-sub{color:var(--muted);font-size:1rem;max-width:480px;line-height:1.8;font-weight:300;}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:3rem;}
+.prod-card{background:var(--surface);padding:2rem;transition:background 0.2s;position:relative;cursor:pointer;}
+.prod-card:hover{background:var(--surface2);}
+.prod-card.featured{border-top:2px solid var(--purple);}
+.prod-icon{width:44px;height:44px;background:var(--purple-dim);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;font-size:20px;}
+.prod-tag{position:absolute;top:1.25rem;right:1.25rem;font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:3px 10px;border-radius:99px;}
+.tag-live{background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);}
+.tag-soon{background:var(--purple-dim);color:var(--purple-light);border:1px solid rgba(139,92,246,0.25);}
+.prod-name{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;}
+.prod-desc{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+.prod-arrow{margin-top:1.25rem;font-size:13px;color:var(--purple);font-weight:500;display:flex;align-items:center;gap:5px;transition:gap 0.2s;}
+.prod-card:hover .prod-arrow{gap:10px;}
+.creator-band{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:6rem 2.5rem;}
+.creator-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.creator-cards{display:flex;flex-direction:column;gap:1rem;}
+.creator-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:flex;align-items:flex-start;gap:1rem;transition:border-color 0.2s;}
+.creator-card:hover{border-color:rgba(139,92,246,0.3);}
+.creator-icon{width:36px;height:36px;background:var(--purple-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.creator-card-title{font-family:var(--font-display);font-size:13px;font-weight:700;margin-bottom:3px;}
+.creator-card-desc{font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2.5rem;margin-top:3rem;}
+.step-num{font-family:var(--font-display);font-size:3.5rem;font-weight:800;color:rgba(139,92,246,0.15);line-height:1;margin-bottom:0.75rem;}
+.step-title{font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:0.5rem;}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.75;font-weight:300;}
+.access-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:4rem;text-align:center;position:relative;overflow:hidden;max-width:800px;margin:0 auto;}
+.access-glow{position:absolute;top:-60%;left:50%;transform:translateX(-50%);width:500px;height:400px;background:radial-gradient(ellipse,rgba(139,92,246,0.15) 0%,transparent 70%);pointer-events:none;}
+.access-form{display:flex;gap:8px;max-width:440px;margin:0 auto;}
+.access-form input{flex:1;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:13px 16px;border-radius:8px;font-size:14px;font-family:var(--font-body);outline:none;transition:border-color 0.2s;}
+.access-form input:focus{border-color:var(--purple);}
+.access-form input::placeholder{color:var(--muted2);}
+.access-note{font-size:12px;color:var(--muted2);margin-top:1rem;}
+footer{border-top:1px solid var(--border);padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;}
+.footer-left{font-size:12px;color:var(--muted2);}
+.footer-left span{color:var(--purple);}
+.footer-right{display:flex;align-items:center;gap:1.5rem;}
+.footer-right span{font-size:12px;color:var(--muted2);}
+.footer-by em{font-style:normal;color:var(--muted);}
+.page-header{padding:8rem 2.5rem 3rem;max-width:1200px;margin:0 auto;border-bottom:1px solid var(--border);}
+/* PARTNER STYLES */
+.partner-header{padding:6rem 2.5rem 3rem;max-width:1200px;margin:0 auto;border-bottom:1px solid var(--border);display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;}
+.partner-intro-badge{display:flex;align-items:center;gap:8px;background:var(--purple-dim);border:1px solid rgba(139,92,246,0.25);border-radius:10px;padding:0.75rem 1.25rem;white-space:nowrap;}
+.partner-intro-badge span{font-size:12px;color:var(--purple-light);font-weight:500;}
+.spotlight-section{max-width:1200px;margin:0 auto;padding:2.5rem 2.5rem 0;}
+.spotlight-label{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;}
+.spotlight-label-text{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);}
+.spotlight-bar{flex:1;height:1px;background:linear-gradient(90deg,var(--gold-border),transparent);}
+.spotlight-card{background:var(--surface);border:1px solid var(--gold-border);border-radius:16px;padding:2.5rem;position:relative;overflow:hidden;}
+.spotlight-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),rgba(245,200,66,0.3));}
+.spotlight-glow{position:absolute;top:-40%;right:-10%;width:400px;height:400px;background:radial-gradient(ellipse,rgba(245,200,66,0.06) 0%,transparent 70%);pointer-events:none;}
+.spotlight-inner{display:grid;grid-template-columns:auto 1fr auto;gap:2rem;align-items:start;}
+.spotlight-logo{width:72px;height:72px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.4rem;font-weight:800;color:var(--gold);flex-shrink:0;}
+.spotlight-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.5rem;}
+.spotlight-name{font-family:var(--font-display);font-size:1.4rem;font-weight:800;margin-bottom:0.25rem;}
+.spotlight-tagline{font-size:13px;color:var(--muted);font-weight:300;margin-bottom:1rem;}
+.spotlight-modules{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem;}
+.mod-tag{font-size:11px;padding:3px 10px;border-radius:6px;background:var(--purple-dim);color:var(--purple-light);border:1px solid rgba(139,92,246,0.2);}
+.spotlight-bio{font-size:13px;color:var(--muted);line-height:1.8;font-weight:300;max-width:600px;}
+.spotlight-stats{display:flex;flex-direction:column;gap:1rem;min-width:180px;}
+.spotlight-stat{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;text-align:center;}
+.spotlight-stat-val{font-family:var(--font-display);font-size:1.4rem;font-weight:800;color:var(--gold);}
+.spotlight-stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px;}
+.spotlight-services{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.spotlight-service{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem;}
+.spotlight-service-title{font-family:var(--font-display);font-size:12px;font-weight:700;margin-bottom:4px;}
+.spotlight-service-desc{font-size:11px;color:var(--muted);line-height:1.6;}
+.btn-intro{background:var(--gold);color:#0a0a0a;border:none;padding:11px 22px;border-radius:8px;font-size:13px;font-family:var(--font-body);font-weight:700;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.btn-intro:hover{opacity:0.88;transform:translateY(-1px);}
+.featured-section{max-width:1200px;margin:2rem auto 0;padding:0 2.5rem;}
+.section-divider{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;}
+.section-divider-text{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple-light);}
+.section-divider-bar{flex:1;height:1px;background:linear-gradient(90deg,rgba(139,92,246,0.3),transparent);}
+.featured-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1rem;}
+.featured-card{background:var(--surface);border:1px solid rgba(139,92,246,0.2);border-radius:14px;padding:1.75rem;position:relative;overflow:hidden;transition:border-color 0.2s,background 0.2s;}
+.featured-card:hover{border-color:rgba(139,92,246,0.4);background:var(--surface2);}
+.featured-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),rgba(139,92,246,0.2));}
+.featured-card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;}
+.featured-logo{width:48px;height:48px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--purple-light);}
+.featured-badge{font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--purple-dim);color:var(--purple-light);border:1px solid rgba(139,92,246,0.25);}
+.featured-name{font-family:var(--font-display);font-size:1.05rem;font-weight:700;margin-bottom:3px;}
+.featured-tagline{font-size:12px;color:var(--muted);margin-bottom:0.75rem;font-weight:300;}
+.featured-modules{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:0.75rem;}
+.featured-bio{font-size:12px;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:1rem;}
+.featured-meta{display:flex;align-items:center;justify-content:space-between;padding-top:0.75rem;border-top:1px solid var(--border);}
+.featured-meta-item{text-align:center;}
+.featured-meta-val{font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--purple-light);}
+.featured-meta-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+.btn-intro-sm{background:transparent;color:var(--purple-light);border:1px solid rgba(139,92,246,0.3);padding:8px 16px;border-radius:7px;font-size:12px;font-family:var(--font-body);font-weight:500;cursor:pointer;transition:all 0.2s;}
+.btn-intro-sm:hover{background:var(--purple-dim);border-color:var(--purple);}
+.listed-section{max-width:1200px;margin:2rem auto 0;padding:0 2.5rem 3rem;}
+.listed-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.listed-card{background:var(--surface);padding:1.25rem 1.5rem;transition:background 0.2s;display:flex;align-items:center;gap:1rem;}
+.listed-card:hover{background:var(--surface2);}
+.listed-logo{width:38px;height:38px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:0.8rem;font-weight:800;color:var(--muted);flex-shrink:0;}
+.listed-info{flex:1;min-width:0;}
+.listed-name{font-size:13px;font-weight:500;margin-bottom:2px;}
+.listed-spec{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.listed-badge{font-size:9px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 7px;border-radius:99px;background:var(--teal-dim);color:var(--teal);border:1px solid var(--teal-border);white-space:nowrap;}
+.tier-section{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 2.5rem;margin-top:3rem;}
+.tier-inner{max-width:1000px;margin:0 auto;}
+.tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem;}
+.tier-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:2rem;position:relative;transition:border-color 0.2s;}
+.tier-card.pop{border-color:rgba(139,92,246,0.4);background:var(--surface2);}
+.tier-card.spotlight-t{border-color:var(--gold-border);}
+.tier-pop-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--purple);color:#fff;font-size:10px;font-weight:700;padding:3px 14px;border-radius:99px;letter-spacing:0.06em;white-space:nowrap;}
+.tier-name{font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:0.25rem;}
+.tier-card.spotlight-t .tier-name{color:var(--gold);}
+.tier-card.pop .tier-name{color:var(--purple-light);}
+.tier-price{font-family:var(--font-display);font-size:2rem;font-weight:800;line-height:1;margin-bottom:0.25rem;}
+.tier-period{font-size:12px;color:var(--muted);}
+.tier-divider{height:1px;background:var(--border);margin:1.25rem 0;}
+.tier-features{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.5rem;}
+.tier-feature{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--muted);line-height:1.5;}
+.tier-feature-dot{width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;margin-top:1px;}
+.tier-feature-dot.yes{background:var(--teal-dim);color:var(--teal);border:1px solid var(--teal-border);}
+.tier-feature-dot.no{background:rgba(107,114,128,0.1);color:#555;border:1px solid rgba(107,114,128,0.15);}
+.tier-feature.active{color:var(--text);}
+.tier-btn{width:100%;padding:11px;border-radius:8px;font-size:13px;font-family:var(--font-body);font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:transparent;color:var(--muted);}
+.tier-card.pop .tier-btn{background:var(--purple);color:#fff;border-color:transparent;}
+.tier-card.pop .tier-btn:hover{background:var(--purple-light);}
+.tier-card.spotlight-t .tier-btn{background:var(--gold-dim);color:var(--gold);border-color:var(--gold-border);}
+/* LIVE DATA */
+.live-header{padding:6rem 2.5rem 2rem;max-width:1400px;margin:0 auto;border-bottom:1px solid var(--border);}
+.live-header h2{font-family:var(--font-display);font-size:1.8rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.4rem;}
+.live-header p{font-size:13px;color:var(--muted);margin-bottom:1rem;max-width:640px;}
+.live-badge{display:inline-flex;align-items:center;gap:6px;background:var(--teal-dim);border:1px solid var(--teal-border);color:var(--teal);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;margin-left:10px;vertical-align:middle;}
+.live-dot-g{width:6px;height:6px;background:var(--teal);border-radius:50%;display:inline-block;animation:blink 2s infinite;}
+.lock-notice{display:inline-flex;align-items:center;gap:8px;background:var(--purple-dim);border:1px solid rgba(139,92,246,0.2);color:var(--purple-light);font-size:12px;padding:8px 16px;border-radius:8px;}
+.dash-embed{padding:2rem 2.5rem 1rem;max-width:1400px;margin:0 auto;}
+.ticker-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;padding:0.6rem 0;margin-bottom:1.5rem;}
+.ticker-track{display:flex;gap:2.5rem;padding:0 1.5rem;animation:ticker 35s linear infinite;white-space:nowrap;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.t-item{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);}
+.t-item strong{color:var(--text);}
+.t-up{color:var(--teal);}.t-dn{color:#ff4d6d;}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.s-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.5rem;position:relative;overflow:hidden;}
+.s-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--c,var(--teal));}
+.s-lbl{font-size:11px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem;}
+.s-val{font-family:var(--font-display);font-size:1.8rem;font-weight:800;letter-spacing:-0.03em;line-height:1;margin-bottom:0.3rem;}
+.s-chg{font-size:11px;color:var(--muted);}
+.main-grid{display:grid;grid-template-columns:1fr 380px;gap:1.25rem;margin-bottom:1.25rem;}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.4rem;border-bottom:1px solid var(--border);}
+.panel-title{font-family:var(--font-display);font-size:0.92rem;font-weight:700;}
+.panel-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.chips{display:flex;gap:0.4rem;flex-wrap:wrap;}
+.chip{padding:4px 12px;border-radius:20px;font-size:11px;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--font-body);transition:all 0.15s;}
+.chip.on{background:rgba(0,229,160,0.1);border-color:var(--teal-border);color:var(--teal);}
+.sal-tbl{width:100%;border-collapse:collapse;}
+.sal-tbl th{padding:0.6rem 1.4rem;text-align:left;font-size:10px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;background:var(--surface2);border-bottom:1px solid var(--border);}
+.sal-tbl td{padding:0.9rem 1.4rem;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.sal-tbl tr:last-child td{border-bottom:none;}
+.sal-tbl tr:hover td{background:rgba(255,255,255,0.02);}
+.r-tag{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue-border);margin-left:6px;}
+.bar-bg{flex:1;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--blue),var(--teal));}
+.d-hi{background:var(--teal-dim);color:var(--teal);border:1px solid var(--teal-border);}
+.d-me{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border);}
+.d-lo{background:rgba(107,114,128,0.1);color:#6b7280;border:1px solid rgba(107,114,128,0.2);}
+.dbadge{display:inline-flex;align-items:center;font-size:10px;padding:3px 8px;border-radius:5px;}
+.btm-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+.cert-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem;padding:1rem 1.4rem;}
+.cert-cell{border-radius:8px;padding:0.7rem;text-align:center;border:1px solid var(--border);}
+.cert-name{font-size:10px;color:var(--muted);margin-bottom:3px;}
+.cert-prem{font-family:var(--font-display);font-size:0.85rem;font-weight:800;}
+.loc-item{display:flex;align-items:center;gap:0.9rem;padding:0.75rem 1.4rem;border-bottom:1px solid var(--border);}
+.loc-item:last-child{border-bottom:none;}
+.loc-rank{font-size:11px;color:var(--muted);width:18px;}
+.loc-name{font-size:13px;font-weight:500;margin-bottom:4px;}
+.loc-bar-bg{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+.loc-bar-fill{height:100%;border-radius:2px;}
+.loc-avg{font-size:12px;white-space:nowrap;font-weight:600;}
+.chart-bars{display:flex;align-items:flex-end;gap:6px;height:80px;}
+.chart-bar{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--blue),rgba(0,153,255,0.3));cursor:pointer;transition:background 0.2s;position:relative;}
+.chart-bar:hover{background:linear-gradient(180deg,var(--teal),rgba(0,229,160,0.3));}
+.chart-bar-label{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--muted);white-space:nowrap;}
+.chart-lbl{display:flex;justify-content:space-between;margin-top:22px;font-size:10px;color:var(--muted);}
+.mini-chart{padding:1rem 1.4rem 1.4rem;}
+/* RATES */
+.rate-item{border-bottom:1px solid var(--border);padding:1rem 1.4rem;}
+.rate-item:last-child{border-bottom:none;}
+.r-role{font-size:13px;font-weight:500;margin-bottom:2px;}
+.r-type{font-size:10px;color:var(--muted);margin-bottom:0.5rem;}
+/* NEWS */
+.news-section{max-width:1400px;margin:0 auto;padding:0 2.5rem 3rem;}
+.news-divider{height:1px;background:var(--border);margin:2rem 0 2.5rem;}
+.news-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.news-title{font-family:var(--font-display);font-size:1rem;font-weight:700;}
+.news-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.news-live{display:inline-flex;align-items:center;gap:5px;background:var(--teal-dim);border:1px solid var(--teal-border);color:var(--teal);font-size:11px;padding:4px 10px;border-radius:99px;}
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem;}
+.news-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;transition:border-color 0.2s,background 0.2s;cursor:pointer;text-decoration:none;display:block;}
+.news-card:hover{border-color:rgba(139,92,246,0.3);background:var(--surface2);}
+.news-source{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple-light);margin-bottom:0.4rem;}
+.news-headline{font-family:var(--font-display);font-size:0.88rem;font-weight:700;line-height:1.4;margin-bottom:0.5rem;color:var(--text);}
+.news-desc{font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;margin-bottom:0.75rem;}
+.news-date{font-size:10px;color:var(--muted2);}
+.news-loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:3rem;color:var(--muted);font-size:13px;}
+.news-spinner{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mod570-card{border-color:rgba(139,92,246,0.25);position:relative;overflow:hidden;}
+.mod570-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),rgba(139,92,246,0.2));}
+.mod570-card:hover{border-color:rgba(139,92,246,0.5);}
+.mod570-source{color:var(--purple-light) !important;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-lockup">
+      <div class="nav-logo-text"><span>Mod</span>Workflows</div>
+      <div class="nav-by">by Tommy Burnell</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a id="nav-home" class="active" onclick="showPage('home')">Home</a>
+    <a id="nav-products" onclick="showPage('products')">Products</a>
+    <a id="nav-partners" onclick="showPage('partners')">Partner Network</a>
+    <a id="nav-live" onclick="showPage('live')">Live Data</a>
+    <a id="nav-about" onclick="showPage('about')">About</a>
+  </div>
+  <button class="nav-cta" onclick="showPage('about')">Request Access</button>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-grid"></div><div class="hero-glow"></div>
+    <div class="hero-badge"><span class="pulse"></span>&nbsp; Now accepting applications</div>
+    <h1>The operating system<br/>for <em>modern creators</em></h1>
+    <div class="tagline">Create Your Legacy</div>
+    <div class="hero-byline">by <span>Tommy Burnell</span></div>
+    <p>Workflow tools, verified connections, and live market data — built for the people building something real.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="showPage('about')">Request Access</button>
+      <button class="btn-ghost" onclick="showPage('products')">View Products →</button>
+    </div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num">500<span>+</span></div><div class="stat-lbl">Verified Connections</div></div>
+    <div class="stat"><div class="stat-num">3<span>+</span></div><div class="stat-lbl">Platform Tools</div></div>
+    <div class="stat"><div class="stat-num">100<span>%</span></div><div class="stat-lbl">Invite Only</div></div>
+    <div class="stat"><div class="stat-num">US<span> & Global</span></div><div class="stat-lbl">Coverage</div></div>
+  </div>
+  <div class="sect">
+    <div class="sect-label">Platform</div>
+    <div class="sect-title">Tools built by a creator,<br/>for creators</div>
+    <p class="sect-sub">Every tool in ModWorkflows comes from real experience — in ServiceNow, in clothing, in building businesses from scratch.</p>
+    <div class="prod-grid">
+      <div class="prod-card featured" onclick="showPage('products')"><span class="prod-tag tag-live">Available Now</span><div class="prod-icon">🏭</div><div class="prod-name">Manufacturer Directory</div><p class="prod-desc">Verified connections to clothing manufacturers for streetwear and athletic wear. Filtered, vetted, and ready to work with.</p><div class="prod-arrow">Explore Directory →</div></div>
+      <div class="prod-card featured" onclick="showPage('partners')"><span class="prod-tag tag-live">Available Now</span><div class="prod-icon">🤝</div><div class="prod-name">ServiceNow Partner Network</div><p class="prod-desc">Verified ServiceNow implementation, managed service, and build partners — introduced directly through ModWorkflows.</p><div class="prod-arrow">View Partners →</div></div>
+      <div class="prod-card" onclick="showPage('live')"><span class="prod-tag tag-live">Live Now</span><div class="prod-icon">📊</div><div class="prod-name">ServiceNow Market Intelligence</div><p class="prod-desc">Real-time salary benchmarks, contract rates, and demand signals across the ServiceNow ecosystem.</p><div class="prod-arrow">View Dashboard →</div></div>
+      <div class="prod-card"><span class="prod-tag tag-soon">Coming Soon</span><div class="prod-icon">📋</div><div class="prod-name">RFQ Manager</div><p class="prod-desc">Send quote requests to multiple manufacturers at once. Track responses and manage your entire sourcing pipeline.</p><div class="prod-arrow">Learn More →</div></div>
+      <div class="prod-card"><span class="prod-tag tag-soon">Coming Soon</span><div class="prod-icon">📐</div><div class="prod-name">Tech Pack Builder</div><p class="prod-desc">Production-ready spec sheet templates built for streetwear and athletic garment construction.</p><div class="prod-arrow">Learn More →</div></div>
+    </div>
+  </div>
+  <div class="creator-band">
+    <div class="creator-inner">
+      <div>
+        <div class="sect-label">The vision</div>
+        <div class="sect-title" style="font-size:clamp(1.6rem,3.5vw,2.5rem);">Two worlds.<br/>One platform.</div>
+        <p style="color:var(--muted);font-size:14px;line-height:1.9;margin-top:1rem;font-weight:300;">ModWorkflows sits at the intersection of two industries Tommy Burnell knows inside and out — enterprise technology and the creator economy. The tools here are not built for everyone. They are built for the people serious enough to need them.</p>
+      </div>
+      <div class="creator-cards">
+        <div class="creator-card"><div class="creator-icon">⚙️</div><div><div class="creator-card-title">ServiceNow Expertise</div><div class="creator-card-desc">Live market intelligence, verified partner network, and contract rate benchmarks — powered by real industry experience.</div></div></div>
+        <div class="creator-card"><div class="creator-icon">👕</div><div><div class="creator-card-title">Clothing and Brand Building</div><div class="creator-card-desc">Verified connections to manufacturers built for streetwear and athletic brands — the resource that did not exist until now.</div></div></div>
+        <div class="creator-card"><div class="creator-icon">🔮</div><div><div class="creator-card-title">More Coming</div><div class="creator-card-desc">ModWorkflows grows as the vision grows. RFQ tools, tech packs, drop calendars — the roadmap is just getting started.</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:7rem 2.5rem;">
+    <div style="max-width:1100px;margin:0 auto;">
+      <div class="sect-label">Process</div>
+      <div class="sect-title">Built for people<br/>who move with intention</div>
+      <p class="sect-sub">ModWorkflows removes the friction between having an idea and executing on it.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">01</div><div class="step-title">Request access</div><p class="step-desc">Apply for an invite. We review each application to keep the network intentional and quality high.</p></div>
+        <div class="step"><div class="step-num">02</div><div class="step-title">Access your tools</div><p class="step-desc">Get into the platform and use the tools built for your world — ServiceNow, streetwear, or both.</p></div>
+        <div class="step"><div class="step-num">03</div><div class="step-title">Connect directly</div><p class="step-desc">Verified connections only. Every introduction is facilitated by Tommy Burnell and ModWorkflows.</p></div>
+        <div class="step"><div class="step-num">04</div><div class="step-title">Build your legacy</div><p class="step-desc">Use ModWorkflows as the operational backbone for whatever you are building. This is your infrastructure.</p></div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:0 2.5rem 7rem;">
+    <div class="access-wrap">
+      <div class="access-glow"></div>
+      <div class="sect-label">Invite Only</div>
+      <div class="sect-title" style="font-size:clamp(1.6rem,3vw,2.4rem);">Ready to build<br/>something real?</div>
+      <p class="sect-sub" style="margin:0.75rem auto 2rem;">ModWorkflows is currently invite-only. Drop your email and we will reach out when your application is reviewed.</p>
+      <div class="access-form"><input type="email" placeholder="your@email.com"/><button class="btn-primary">Apply</button></div>
+      <p class="access-note">No spam. No BS. Just an invite when you are approved.</p>
+    </div>
+  </div>
+  <footer><div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div><div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div></footer>
+</div>
+
+<!-- PRODUCTS -->
+<div class="page" id="page-products">
+  <div class="page-header">
+    <div class="sect-label">All Products</div>
+    <div class="sect-title">ModWorkflows tools</div>
+    <p class="sect-sub">Every tool built with purpose — for creators, founders, and operators serious about what they are building.</p>
+  </div>
+  <div class="sect" style="padding-top:3rem;">
+    <div class="prod-grid">
+      <div class="prod-card featured"><span class="prod-tag tag-live">Available Now</span><div class="prod-icon">🏭</div><div class="prod-name">Manufacturer Directory</div><p class="prod-desc">Verified connections to clothing manufacturers for streetwear and athletic wear.</p><div class="prod-arrow">Explore →</div></div>
+      <div class="prod-card featured" onclick="showPage('partners')"><span class="prod-tag tag-live">Available Now</span><div class="prod-icon">🤝</div><div class="prod-name">ServiceNow Partner Network</div><p class="prod-desc">Verified ServiceNow implementation, managed service, and build partners introduced through ModWorkflows.</p><div class="prod-arrow">View Partners →</div></div>
+      <div class="prod-card featured" onclick="showPage('live')"><span class="prod-tag tag-live">Live Now</span><div class="prod-icon">📊</div><div class="prod-name">ServiceNow Market Intelligence</div><p class="prod-desc">Real-time salary benchmarks, contract rates, and demand signals.</p><div class="prod-arrow">View Dashboard →</div></div>
+      <div class="prod-card"><span class="prod-tag tag-soon">Coming Soon</span><div class="prod-icon">📋</div><div class="prod-name">RFQ Manager</div><p class="prod-desc">Send quote requests to multiple manufacturers simultaneously.</p><div class="prod-arrow">Learn More →</div></div>
+      <div class="prod-card"><span class="prod-tag tag-soon">Coming Soon</span><div class="prod-icon">📐</div><div class="prod-name">Tech Pack Builder</div><p class="prod-desc">Production-ready spec sheet templates for streetwear and athletic garments.</p><div class="prod-arrow">Learn More →</div></div>
+      <div class="prod-card"><span class="prod-tag tag-soon">Coming Soon</span><div class="prod-icon">🗓️</div><div class="prod-name">Drop Calendar</div><p class="prod-desc">Plan release windows and track production timelines across your brand calendar.</p><div class="prod-arrow">Learn More →</div></div>
+    </div>
+  </div>
+  <footer><div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div><div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div></footer>
+</div>
+
+<!-- PARTNER NETWORK -->
+<div class="page" id="page-partners">
+  <div class="partner-header">
+    <div>
+      <div class="sect-label">ServiceNow Partner Network</div>
+      <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:0.5rem;">Verified partners.<br/>Every introduction counts.</h2>
+      <p style="font-size:14px;color:var(--muted);max-width:520px;line-height:1.75;font-weight:300;">Every partner on this network has been personally vetted by Tommy Burnell. Whether you need implementation, managed services, or custom builds — ModWorkflows connects you directly.</p>
+    </div>
+    <div class="partner-intro-badge"><span>🤝</span><span>All introductions facilitated<br/>by ModWorkflows</span></div>
+  </div>
+  <div class="spotlight-section">
+    <div class="spotlight-label"><span class="spotlight-label-text">⭐ Spotlight Partner</span><div class="spotlight-bar"></div></div>
+    <div class="spotlight-card">
+      <div class="spotlight-glow"></div>
+      <div class="spotlight-inner">
+        <div class="spotlight-logo">NX</div>
+        <div>
+          <div class="spotlight-badge">⭐ Spotlight</div>
+          <div class="spotlight-name">Nexora Solutions</div>
+          <div class="spotlight-tagline">Enterprise ServiceNow transformation specialists — ITSM, HRSD, SecOps and beyond</div>
+          <div class="spotlight-modules"><span class="mod-tag">ITSM</span><span class="mod-tag">HRSD</span><span class="mod-tag">SecOps</span><span class="mod-tag">CSM</span><span class="mod-tag">SPM</span><span class="mod-tag">CMDB</span></div>
+          <div class="spotlight-bio">Nexora Solutions has been delivering enterprise-grade ServiceNow implementations for over a decade. Specializing in complex multi-module deployments for Fortune 500 clients, they bring deep technical expertise and a proven delivery methodology that consistently reduces time-to-value.</div>
+          <div class="spotlight-services">
+            <div class="spotlight-service"><div class="spotlight-service-title">Implementation</div><div class="spotlight-service-desc">Full-cycle ServiceNow deployments from scoping through go-live, tailored to your environment.</div></div>
+            <div class="spotlight-service"><div class="spotlight-service-title">Managed Services</div><div class="spotlight-service-desc">Ongoing platform administration, optimization, and enhancement post-deployment.</div></div>
+            <div class="spotlight-service"><div class="spotlight-service-title">Custom Build</div><div class="spotlight-service-desc">Bespoke ServiceNow applications, integrations, and workflow automations built to spec.</div></div>
+          </div>
+        </div>
+        <div class="spotlight-stats">
+          <div class="spotlight-stat"><div class="spotlight-stat-val">12+</div><div class="spotlight-stat-lbl">Years Active</div></div>
+          <div class="spotlight-stat"><div class="spotlight-stat-val">200+</div><div class="spotlight-stat-lbl">Deployments</div></div>
+          <div class="spotlight-stat"><div class="spotlight-stat-val">F500</div><div class="spotlight-stat-lbl">Client Level</div></div>
+          <button class="btn-intro" style="margin-top:0.5rem;">Request Intro →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="featured-section" style="margin-top:2.5rem;">
+    <div class="section-divider"><span class="section-divider-text">Featured Partners</span><div class="section-divider-bar"></div></div>
+    <div class="featured-grid">
+      <div class="featured-card"><div class="featured-card-head"><div class="featured-logo">CV</div><span class="featured-badge">Featured</span></div><div class="featured-name">ClearVista IT</div><div class="featured-tagline">Mid-market ITSM and CMDB specialists</div><div class="featured-modules"><span class="mod-tag">ITSM</span><span class="mod-tag">CMDB</span><span class="mod-tag">ITOM</span></div><div class="featured-bio">ClearVista delivers focused ITSM and CMDB implementations for mid-market organizations. Known for fast time-to-value and no-fluff delivery.</div><div class="featured-meta"><div class="featured-meta-item"><div class="featured-meta-val">8yr</div><div class="featured-meta-lbl">Experience</div></div><div class="featured-meta-item"><div class="featured-meta-val">80+</div><div class="featured-meta-lbl">Projects</div></div><div class="featured-meta-item"><div class="featured-meta-val">Mid-Mkt</div><div class="featured-meta-lbl">Focus</div></div><button class="btn-intro-sm">Request Intro →</button></div></div>
+      <div class="featured-card"><div class="featured-card-head"><div class="featured-logo">AP</div><span class="featured-badge">Featured</span></div><div class="featured-name">Apex ServiceNow Group</div><div class="featured-tagline">HRSD and employee experience leaders</div><div class="featured-modules"><span class="mod-tag">HRSD</span><span class="mod-tag">CSM</span><span class="mod-tag">Onboarding</span></div><div class="featured-bio">Apex focuses exclusively on the human side of ServiceNow — HRSD, employee onboarding, and case management.</div><div class="featured-meta"><div class="featured-meta-item"><div class="featured-meta-val">5yr</div><div class="featured-meta-lbl">Experience</div></div><div class="featured-meta-item"><div class="featured-meta-val">60+</div><div class="featured-meta-lbl">Projects</div></div><div class="featured-meta-item"><div class="featured-meta-val">HRSD</div><div class="featured-meta-lbl">Specialty</div></div><button class="btn-intro-sm">Request Intro →</button></div></div>
+      <div class="featured-card"><div class="featured-card-head"><div class="featured-logo">SG</div><span class="featured-badge">Featured</span></div><div class="featured-name">ShieldGuard Security</div><div class="featured-tagline">SecOps and GRC implementation experts</div><div class="featured-modules"><span class="mod-tag">SecOps</span><span class="mod-tag">GRC</span><span class="mod-tag">IRM</span></div><div class="featured-bio">ShieldGuard brings deep security domain expertise to every ServiceNow engagement. Trusted by regulated industries for SecOps and GRC deployments.</div><div class="featured-meta"><div class="featured-meta-item"><div class="featured-meta-val">7yr</div><div class="featured-meta-lbl">Experience</div></div><div class="featured-meta-item"><div class="featured-meta-val">45+</div><div class="featured-meta-lbl">Projects</div></div><div class="featured-meta-item"><div class="featured-meta-val">SecOps</div><div class="featured-meta-lbl">Specialty</div></div><button class="btn-intro-sm">Request Intro →</button></div></div>
+    </div>
+  </div>
+  <div class="listed-section" style="margin-top:2.5rem;">
+    <div class="section-divider"><span class="section-divider-text" style="color:var(--muted);">Listed Partners</span><div class="section-divider-bar" style="background:linear-gradient(90deg,rgba(255,255,255,0.1),transparent);"></div></div>
+    <div class="listed-grid">
+      <div class="listed-card"><div class="listed-logo">BT</div><div class="listed-info"><div class="listed-name">BlueTech Consulting</div><div class="listed-spec">ITSM · ITOM · Platform Admin</div></div><span class="listed-badge">Verified</span></div>
+      <div class="listed-card"><div class="listed-logo">PF</div><div class="listed-info"><div class="listed-name">PeakFlow Partners</div><div class="listed-spec">SPM · PPM · Agile</div></div><span class="listed-badge">Verified</span></div>
+      <div class="listed-card"><div class="listed-logo">OW</div><div class="listed-info"><div class="listed-name">OneWorkflow LLC</div><div class="listed-spec">CSM · FSM · Integration</div></div><span class="listed-badge">Verified</span></div>
+      <div class="listed-card"><div class="listed-logo">DX</div><div class="listed-info"><div class="listed-name">DataXcel Group</div><div class="listed-spec">CMDB · Discovery · ITAM</div></div><span class="listed-badge">Verified</span></div>
+      <div class="listed-card"><div class="listed-logo">RI</div><div class="listed-info"><div class="listed-name">Ridgeline IT</div><div class="listed-spec">ITSM · HRSD · Managed Services</div></div><span class="listed-badge">Verified</span></div>
+      <div class="listed-card"><div class="listed-logo">VN</div><div class="listed-info"><div class="listed-name">Vantage Now</div><div class="listed-spec">SecOps · GRC · Compliance</div></div><span class="listed-badge">Verified</span></div>
+      <div class="listed-card"><div class="listed-logo">SC</div><div class="listed-info"><div class="listed-name">Syncore Advisory</div><div class="listed-spec">ATF · Testing · QA</div></div><span class="listed-badge">Verified</span></div>
+      <div class="listed-card"><div class="listed-logo">LM</div><div class="listed-info"><div class="listed-name">Luminary MSP</div><div class="listed-spec">Managed Services · Support</div></div><span class="listed-badge">Verified</span></div>
+    </div>
+  </div>
+  <div class="tier-section">
+    <div class="tier-inner">
+      <div class="sect-label">Partner Tiers</div>
+      <div class="sect-title" style="font-size:clamp(1.6rem,3vw,2.4rem);">Get listed. Get noticed. Get introduced.</div>
+      <p class="sect-sub">Every partner on the network is verified by ModWorkflows. Choose the tier that matches your visibility goals.</p>
+      <div class="tier-grid">
+        <div class="tier-card">
+          <div class="tier-name">Listed</div>
+          <div class="tier-price">$199<span style="font-size:1rem;font-weight:400;color:var(--muted)">/mo</span></div>
+          <div class="tier-period">Base visibility · Verified badge</div>
+          <div class="tier-divider"></div>
+          <div class="tier-features">
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Name, logo and modules listed</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Verified partner badge</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Intro request button</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Directory search placement</div>
+            <div class="tier-feature"><div class="tier-feature-dot no">–</div>Expanded bio and services</div>
+            <div class="tier-feature"><div class="tier-feature-dot no">–</div>Company stats and metrics</div>
+            <div class="tier-feature"><div class="tier-feature-dot no">–</div>Priority intro routing</div>
+            <div class="tier-feature"><div class="tier-feature-dot no">–</div>Spotlight placement</div>
+          </div>
+          <button class="tier-btn">Get Listed</button>
+        </div>
+        <div class="tier-card pop">
+          <div class="tier-pop-badge">Most Popular</div>
+          <div class="tier-name">Featured</div>
+          <div class="tier-price">$499<span style="font-size:1rem;font-weight:400;color:var(--muted)">/mo</span></div>
+          <div class="tier-period">Enhanced visibility · Priority placement</div>
+          <div class="tier-divider"></div>
+          <div class="tier-features">
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Everything in Listed</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Expanded bio and company description</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Services breakdown displayed</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Company stats and metrics</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Featured section placement</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Featured Partner badge</div>
+            <div class="tier-feature"><div class="tier-feature-dot no">–</div>Priority intro routing</div>
+            <div class="tier-feature"><div class="tier-feature-dot no">–</div>Spotlight hero placement</div>
+          </div>
+          <button class="tier-btn">Get Featured</button>
+        </div>
+        <div class="tier-card spotlight-t">
+          <div class="tier-name">Spotlight</div>
+          <div class="tier-price" style="color:var(--gold)">$1,200<span style="font-size:1rem;font-weight:400;color:var(--muted)">/mo</span></div>
+          <div class="tier-period">Maximum visibility · Hero placement</div>
+          <div class="tier-divider"></div>
+          <div class="tier-features">
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Everything in Featured</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Hero spotlight placement — top of page</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Full company profile and case studies</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Priority intro routing — first access</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Spotlight badge across platform</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Direct line to Tommy Burnell</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>Monthly feature opportunity</div>
+            <div class="tier-feature active"><div class="tier-feature-dot yes">✓</div>1 Spotlight slot available at a time</div>
+          </div>
+          <button class="tier-btn">Apply for Spotlight</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer><div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div><div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div></footer>
+</div>
+
+<!-- LIVE DATA -->
+<div class="page" id="page-live">
+  <div class="live-header">
+    <h2>Tommy's Market Data <span class="live-badge"><span class="live-dot-g"></span>&nbsp;Live</span></h2>
+    <p>Real market intelligence sourced from active placements, client conversations, and ground-level experience in the ServiceNow ecosystem — by Tommy Burnell.</p>
+    <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+      <div class="lock-notice">🔒 Full access requires a ModWorkflows subscription. Preview available below.</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;background:var(--purple-dim);border:1px solid rgba(139,92,246,0.2);color:var(--purple-light);font-size:12px;padding:8px 16px;border-radius:8px;">📍 Not scraped. Not estimated. Real experience.</div>
+    </div>
+  </div>
+  <div class="dash-embed">
+    <div class="ticker-wrap">
+      <div class="ticker-track">
+        <span class="t-item"><strong>Senior Developer</strong>&nbsp;<span class="t-up">↑ $130–165K</span></span>
+        <span class="t-item"><strong>Solution Architect</strong>&nbsp;<span class="t-up">↑ $160–200K</span></span>
+        <span class="t-item"><strong>Senior Architect</strong>&nbsp;<span class="t-up">↑ $200–235K</span></span>
+        <span class="t-item"><strong>BPC</strong>&nbsp;<span class="t-up">↑ $135–160K</span></span>
+        <span class="t-item"><strong>Business Analyst</strong>&nbsp;<span class="t-up">↑ $90–120K</span></span>
+        <span class="t-item"><strong>Technical Consultant</strong>&nbsp;<span class="t-up">↑ $125–170K</span></span>
+        <span class="t-item"><strong>Engagement Manager</strong>&nbsp;<span class="t-up">↑ $125–155K</span></span>
+        <span class="t-item"><strong>Mid-Level Developer</strong>&nbsp;<span class="t-up">↑ $100–120K</span></span>
+        <span class="t-item"><strong>ITOM Specialist</strong>&nbsp;<span class="t-up">↑ Very High Demand</span></span>
+        <span class="t-item"><strong>SPM Specialist</strong>&nbsp;<span class="t-up">↑ Very High Demand</span></span>
+        <span class="t-item"><strong>NowAssist</strong>&nbsp;<span class="t-up">↑ Emerging Fast</span></span>
+        <span class="t-item"><strong>Senior Developer</strong>&nbsp;<span class="t-up">↑ $130–165K</span></span>
+        <span class="t-item"><strong>Solution Architect</strong>&nbsp;<span class="t-up">↑ $160–200K</span></span>
+        <span class="t-item"><strong>BPC</strong>&nbsp;<span class="t-up">↑ $135–160K</span></span>
+        <span class="t-item"><strong>FSO Specialist</strong>&nbsp;<span class="t-up">↑ High Demand</span></span>
+        <span class="t-item"><strong>ITAM Specialist</strong>&nbsp;<span class="t-up">↑ High Demand</span></span>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="s-card" style="--c:#00e5a0"><div class="s-lbl">Avg. Senior Dev Salary</div><div class="s-val" style="color:#00e5a0">$145K</div><div class="s-chg">Based on active placements</div></div>
+      <div class="s-card" style="--c:#0099ff"><div class="s-lbl">Avg. Contract Rate / hr</div><div class="s-val" style="color:#0099ff">$85</div><div class="s-chg">Across all active roles</div></div>
+      <div class="s-card" style="--c:#f5c842"><div class="s-lbl">Est. Open Roles (US)</div><div class="s-val" style="color:#f5c842">18–20K</div><div class="s-chg">LinkedIn, Indeed, ZipRecruiter + more</div></div>
+      <div class="s-card" style="--c:#ff6b35"><div class="s-lbl">CIS Cert Premium</div><div class="s-val" style="color:#ff6b35">+15%</div><div class="s-chg">Avg. rate bump vs non-certified</div></div>
+    </div>
+    <div class="main-grid">
+      <div class="panel">
+        <div class="panel-head">
+          <div><div class="panel-title">Salary Benchmarks by Role</div><div class="panel-sub">Annual compensation · United States</div></div>
+          <div class="chips">
+            <button class="chip on" onclick="dFilter(this,'all')">All</button>
+            <button class="chip" onclick="dFilter(this,'dev')">Dev</button>
+            <button class="chip" onclick="dFilter(this,'arch')">Architect</button>
+            <button class="chip" onclick="dFilter(this,'consultant')">Consultant</button>
+            <button class="chip" onclick="dFilter(this,'ba')">BA</button>
+          </div>
+        </div>
+        <table class="sal-tbl"><thead><tr><th>Role</th><th>Range</th><th>Median</th><th>Demand</th></tr></thead><tbody id="salBody"></tbody></table>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><div class="panel-title">Contract / Freelance Rates</div><div class="panel-sub">Per hour · W2 &amp; 1099</div></div></div>
+        <div id="rateBody" style="overflow-y:auto;max-height:520px;"></div>
+      </div>
+    </div>
+    <div class="btm-grid">
+      <div class="panel">
+        <div class="panel-head"><div><div class="panel-title">Cert Market Value</div><div class="panel-sub">Demand level by certification</div></div></div>
+        <div class="cert-grid" id="certBody"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><div class="panel-title">Top Modules to Study</div><div class="panel-sub">Highest demand · Best ROI for contractors</div></div></div>
+        <div id="locBody"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><div class="panel-title">Market Salary Trend</div><div class="panel-sub">ServiceNow avg. salary index · 2020–2026</div></div></div>
+        <div class="mini-chart"><div class="chart-bars" id="chartBody"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEWS -->
+  <div class="news-section">
+    <div class="news-divider"></div>
+    <div class="news-header">
+      <div><div class="news-title" style="color:var(--purple-light);">✦ From Mod570 &amp; Tommy Burnell</div><div class="news-sub">ServiceNow insights, market takes, and industry commentary — direct from the source</div></div>
+      <div style="display:inline-flex;align-items:center;gap:5px;background:var(--purple-dim);border:1px solid rgba(139,92,246,0.3);color:var(--purple-light);font-size:11px;padding:4px 10px;border-radius:99px;"><span class="pulse"></span> mod570.com</div>
+    </div>
+    <div id="mod570Grid" class="news-grid" style="margin-bottom:2.5rem;"></div>
+    <div style="height:1px;background:var(--border);margin-bottom:2.5rem;"></div>
+    <div class="news-header">
+      <div><div class="news-title">ServiceNow Ecosystem News</div><div class="news-sub">Latest from the ServiceNow community, newsroom &amp; ecosystem — updated live</div></div>
+      <div class="news-live"><span class="live-dot-g"></span> Live feed</div>
+    </div>
+    <div id="newsGrid" class="news-grid"><div class="news-loading"><div class="news-spinner"></div> Loading latest news...</div></div>
+  </div>
+
+  <footer><div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div><div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div></footer>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div style="padding:8rem 2.5rem 5rem;max-width:720px;margin:0 auto;">
+    <div class="sect-label">About</div>
+    <div class="sect-title">Built different,<br/>on purpose</div>
+    <p style="color:var(--muted);font-size:15px;line-height:1.9;margin-bottom:1.25rem;font-weight:300;">ModWorkflows is a DBA under Mod570 LLC — a platform built by Tommy Burnell at the intersection of enterprise technology and the creator economy. ServiceNow market intelligence for professionals. Verified connections for clothing brand founders. Two worlds, one platform.</p>
+    <p style="color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:3.5rem;font-weight:300;">Invite-only because quality matters more than volume. Every tool here is built from real experience, not assumptions.</p>
+    <div class="access-wrap" style="text-align:left;padding:2.5rem;">
+      <div class="access-glow"></div>
+      <div class="sect-label">Request Access</div>
+      <div class="sect-title" style="font-size:2rem;margin-bottom:0.4rem;">Create Your Legacy</div>
+      <div style="font-size:11px;color:var(--muted2);letter-spacing:0.1em;margin-bottom:1.5rem;">by Tommy Burnell</div>
+      <p class="sect-sub" style="margin-bottom:1.5rem;">Apply for invite-only access to the ModWorkflows platform.</p>
+      <div class="access-form" style="max-width:100%;"><input type="email" placeholder="your@email.com"/><button class="btn-primary">Apply Now</button></div>
+      <p class="access-note" style="text-align:left;margin-top:0.75rem;">We will review your application and reach out directly.</p>
+    </div>
+  </div>
+  <footer><div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div><div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div></footer>
+</div>
+
+<script>
+const salaryData = [
+  {role:"Mid-Level Developer",tag:"dev",low:100,high:120,median:110,demand:"med"},
+  {role:"Senior Developer",tag:"dev",low:130,high:165,median:148,demand:"high"},
+  {role:"Technical & Solution Architect",tag:"arch",low:160,high:200,median:180,demand:"high"},
+  {role:"Senior Architect",tag:"arch",low:200,high:235,median:218,demand:"high"},
+  {role:"Technical Consultant",tag:"consultant",low:125,high:170,median:148,demand:"med"},
+  {role:"Business Process Consultant",tag:"consultant",low:135,high:160,median:148,demand:"high"},
+  {role:"Engagement Manager",tag:"mgmt",low:125,high:155,median:140,demand:"low"},
+  {role:"Business Analyst",tag:"ba",low:90,high:120,median:105,demand:"high"}
+];
+
+const rateData = [
+  {role:"ServiceNow Developer",type:"W2 / 1099",tiers:[
+    {label:"Base",desc:"General development experience",rate:"$60-75/hr"},
+    {label:"Specialized",desc:"SPM, ITOM, ITAM, CSM module focus",rate:"$70-85/hr"},
+    {label:"Niche",desc:"Active CIS certs and niche module experience",rate:"Up to $90/hr"}
+  ]},
+  {role:"ServiceNow Architect",type:"W2 / 1099",tiers:[
+    {label:"Base",desc:"Platform architecture experience",rate:"$85-110/hr"},
+    {label:"Specialized",desc:"Deep module or domain expertise",rate:"Up to $120/hr"}
+  ]},
+  {role:"ServiceNow Technical Consultant",type:"W2 / 1099",tiers:[
+    {label:"Base",desc:"Technical consulting across modules",rate:"$65-85/hr"},
+    {label:"Niche",desc:"Active CIS certs and advanced module experience",rate:"Up to $90/hr"}
+  ]},
+  {role:"ServiceNow BPC",type:"W2 / 1099",tiers:[
+    {label:"Base",desc:"Business Process Consultant experience",rate:"$70-85/hr"},
+    {label:"Niche",desc:"CIS certs with deep BPC specialization",rate:"$85-95/hr"}
+  ]},
+  {role:"ServiceNow Engagement Manager",type:"W2 / 1099",tiers:[
+    {label:"Base",desc:"Rate varies depending on project scope",rate:"$70-90/hr"}
+  ]},
+  {role:"ServiceNow Business Analyst",type:"W2 / 1099",tiers:[
+    {label:"Base",desc:"General BA experience",rate:"$60-70/hr"},
+    {label:"Niche",desc:"Niche module experience and active CIS certs",rate:"$75-80/hr"}
+  ]}
+];
+
+const certData = [
+  {name:"CSA",premium:"Med",heat:"warm"},
+  {name:"CIS-ITSM",premium:"High",heat:"hot"},
+  {name:"CIS-SPM",premium:"High",heat:"hot"},
+  {name:"CIS-HR",premium:"Med",heat:"warm"},
+  {name:"CIS-CSM",premium:"Med",heat:"warm"},
+  {name:"CAD",premium:"Med",heat:"warm"},
+  {name:"CIS-Discovery",premium:"High",heat:"hot"},
+  {name:"CIS-Svc Map",premium:"Med",heat:"warm"},
+  {name:"CIS-EM",premium:"Med",heat:"warm"},
+  {name:"CIS-SAM",premium:"High",heat:"hot"},
+  {name:"CIS-HAM",premium:"High",heat:"hot"}
+];
+
+const locData = [
+  {city:"ITOM",avg:"Very High",pct:100},
+  {city:"SPM",avg:"Very High",pct:95},
+  {city:"FSO",avg:"High",pct:88},
+  {city:"ITAM",avg:"High",pct:82},
+  {city:"S2P",avg:"Growing",pct:72},
+  {city:"NowAssist",avg:"Emerging",pct:65}
+];
+
+const trendD = [100,120,126,122,118,118,121];
+const trendL = ["2020","2021","2022","2023","2024","2025","2026"];
+
+const mod570Posts = [
+  {title:"Four Dragons - Foundational Health, Fearless Focus, and the Future of Agentic AI",desc:"In the ServiceNow ecosystem, the next wave of transformation is not just technical. It is about how professionals position themselves at the intersection of AI, health, and focused execution.",date:"Mar 6, 2026",link:"https://mod570.com/blogs/news/%F0%9F%90%89-four-dragons-foundational-health-fearless-focus-and-the-future-of-agentic-ai"},
+  {title:"Brandon Wilson - Designing ServiceNow with Intention, Not Shortcuts",desc:"Some careers are built on shortcuts. Brandon Wilson built his the right way. A deep dive into how one of ServiceNow's most respected architects developed his craft with intention and technical rigor.",date:"Jan 23, 2026",link:"https://mod570.com/blogs/news/brandon-wilson-servicenow-cta-expert"},
+  {title:"Jace Benson - Jace.pro and ServiceNow",desc:"ServiceNow has changed lives, and Jace Benson's story is proof. From the community he built at Jace.pro to his impact on how professionals learn and grow in the ecosystem.",date:"Jan 3, 2025",link:"https://mod570.com/blogs/news/jace-benson-jace-pro-servicenow"}
+];
+
+function renderSal(f) {
+  if (!f) f = "all";
+  const max = Math.max.apply(null, salaryData.map(function(r){return r.median;}));
+  const rows = f === "all" ? salaryData : salaryData.filter(function(r){return r.tag === f;});
+  document.getElementById("salBody").innerHTML = rows.map(function(r) {
+    const pct = Math.round((r.median / max) * 100);
+    const dc = r.demand === "high" ? "d-hi" : r.demand === "med" ? "d-me" : "d-lo";
+    const dl = r.demand === "high" ? "High" : r.demand === "med" ? "Medium" : "Low";
+    return "<tr><td><span style='font-weight:500'>" + r.role + "</span><span class='r-tag'>" + r.tag + "</span></td>" +
+      "<td style='min-width:140px'><div style='display:flex;align-items:center;gap:8px'><div class='bar-bg'><div class='bar-fill' style='width:" + pct + "%'></div></div><span style='font-size:11px;color:var(--muted);white-space:nowrap'>$" + r.low + "-" + r.high + "K</span></div></td>" +
+      "<td><span style='color:#00e5a0;font-size:13px;font-weight:500'>$" + r.median + "K</span></td>" +
+      "<td><span class='dbadge " + dc + "'>" + dl + "</span></td></tr>";
+  }).join("");
+}
+
+function dFilter(btn, f) {
+  var chips = document.querySelectorAll(".chip");
+  for (var i = 0; i < chips.length; i++) chips[i].classList.remove("on");
+  btn.classList.add("on");
+  renderSal(f);
+}
+
+function renderRates() {
+  const tierColors = ["var(--muted)", "#00e5a0", "#f5c842"];
+  const tierBg = ["rgba(107,114,128,0.12)", "rgba(0,153,255,0.08)", "rgba(245,200,66,0.08)"];
+  const tierBorder = ["rgba(107,114,128,0.2)", "rgba(0,153,255,0.2)", "rgba(245,200,66,0.2)"];
+  const tierText = ["#6b7280", "#0099ff", "#f5c842"];
+  document.getElementById("rateBody").innerHTML = rateData.map(function(r) {
+    var tiersHtml = r.tiers.map(function(t, i) {
+      return "<div style='display:flex;align-items:flex-start;justify-content:space-between;padding:6px 0;" + (i < r.tiers.length - 1 ? "border-bottom:1px solid rgba(255,255,255,0.04);" : "") + "'>" +
+        "<div style='display:flex;align-items:flex-start;gap:8px;'>" +
+        "<span style='font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-top:1px;white-space:nowrap;background:" + tierBg[i] + ";color:" + tierText[i] + ";border:1px solid " + tierBorder[i] + ";'>" + t.label + "</span>" +
+        "<span style='font-size:11px;color:var(--muted);line-height:1.5;font-weight:300;'>" + t.desc + "</span></div>" +
+        "<span style='font-size:12px;font-weight:600;color:" + tierColors[i] + ";white-space:nowrap;margin-left:0.75rem;'>" + t.rate + "</span></div>";
+    }).join("");
+    return "<div class='rate-item'><div class='r-role'>" + r.role + "</div><div class='r-type'>" + r.type + "</div>" + tiersHtml + "</div>";
+  }).join("");
+}
+
+function renderCerts() {
+  document.getElementById("certBody").innerHTML = certData.map(function(c) {
+    const col = c.heat === "hot" ? "#00e5a0" : c.heat === "warm" ? "#0099ff" : "var(--muted)";
+    const bg = c.heat === "hot" ? "rgba(0,229,160,0.08)" : c.heat === "warm" ? "rgba(0,153,255,0.08)" : "rgba(107,114,128,0.06)";
+    return "<div class='cert-cell' style='background:" + bg + ";'><div class='cert-name'>" + c.name + "</div><div class='cert-prem' style='color:" + col + ";'>" + c.premium + "</div></div>";
+  }).join("");
+}
+
+function renderLoc() {
+  const demandColor = {"Very High":"#00e5a0","High":"#a78bfa","Growing":"#0099ff","Emerging":"#f5c842"};
+  document.getElementById("locBody").innerHTML = locData.map(function(l, i) {
+    const col = demandColor[l.avg] || "#00e5a0";
+    return "<div class='loc-item'><div class='loc-rank'>" + (i+1) + "</div><div style='flex:1'><div class='loc-name'>" + l.city + "</div><div class='loc-bar-bg'><div class='loc-bar-fill' style='width:" + l.pct + "%;background:" + col + ";'></div></div></div><div class='loc-avg' style='color:" + col + ";'>" + l.avg + "</div></div>";
+  }).join("");
+}
+
+function renderChart() {
+  const max = Math.max.apply(null, trendD);
+  document.getElementById("chartBody").innerHTML = trendD.map(function(v, i) {
+    const h = Math.round((v / max) * 100);
+    const isLast = i === trendD.length - 1;
+    const bg = isLast ? "background:linear-gradient(180deg,#00e5a0,rgba(0,229,160,0.3));" : "";
+    return "<div class='chart-bar' style='height:" + h + "%;position:relative;" + bg + "' title='" + trendL[i] + "'><span class='chart-bar-label'>" + trendL[i] + "</span></div>";
+  }).join("");
+}
+
+function renderMod570() {
+  document.getElementById("mod570Grid").innerHTML = mod570Posts.map(function(p) {
+    return "<a class='news-card mod570-card' href='" + p.link + "' target='_blank' rel='noopener'>" +
+      "<div class='news-source mod570-source'>✦ Mod570 · Tommy Burnell</div>" +
+      "<div class='news-headline'>" + p.title + "</div>" +
+      "<div class='news-desc'>" + p.desc + "</div>" +
+      "<div class='news-date'>" + p.date + "</div></a>";
+  }).join("");
+}
+
+async function fetchNews() {
+  const grid = document.getElementById("newsGrid");
+  if (!grid) return;
+  const proxy = "https://api.rss2json.com/v1/api.json?rss_url=";
+  const feeds = [
+    {url:"https://feeds.feedburner.com/servicenow-community",label:"ServiceNow Community"},
+    {url:"https://www.servicenow.com/feeds/news.rss",label:"ServiceNow Newsroom"},
+    {url:"https://blog.servicenow.com/feed",label:"ServiceNow Blog"}
+  ];
+  const fallback = [
+    {source:"ServiceNow Newsroom",title:"ServiceNow Expands Partnership with NVIDIA at GTC 2026",desc:"ServiceNow and NVIDIA announced an expanded partnership to govern the Autonomous Workforce, combining the AI Control Tower with NVIDIA Enterprise AI Factory.",date:"Mar 16, 2026",link:"https://www.insidermonkey.com/blog/servicenow-now-expands-partnership-with-nvidia-1730828/"},
+    {source:"ServiceNow Community",title:"Q1 2026 Release Highlights for Risk and Resilience",desc:"The Q1 2026 release delivers meaningful advances across AI governance, integrated risk management, privacy, third-party risk, and sustainability.",date:"Mar 2026",link:"https://www.servicenow.com/community/grc-articles/q1-2026-release-highlights-for-risk-and-resilience/ta-p/3506080"},
+    {source:"ServiceNow Community",title:"ServiceNow ITSM Named #1 Best Software for IT Management by G2 in 2026",desc:"G2 has named ServiceNow ITSM the number one Best Software for IT Management Products in its 2026 Best Software Awards.",date:"Mar 2026",link:"https://www.servicenow.com/community/itsm-blog/bg-p/it-service-management-blog"},
+    {source:"The Cloud People",title:"Top Trends Every ServiceNow Platform Owner Should Know in 2026",desc:"AI is moving beyond summarizing tickets into agentic workflows where it can take action within defined guardrails. Platform owners face rising expectations in 2026.",date:"Feb 26, 2026",link:"https://www.thecloudpeople.com/blog/top-trends-every-servicenow-platform-owner-should-know-in-2026"},
+    {source:"ServiceNow Newsroom",title:"ServiceNow to Announce Q1 2026 Financial Results on April 22",desc:"ServiceNow will release financial results for Q1 ended March 31, 2026, following the close of market on April 22, 2026.",date:"Apr 1, 2026",link:"https://www.businesswire.com/news/home/20260401416571/en/ServiceNow-to-Announce-First-Quarter-2026-Financial-Results-on-April-22"},
+    {source:"Constellation Research",title:"ServiceNow Acquires Armis for $7.75B — Top 5 Trends for 2026",desc:"ServiceNow acquired Armis to bring operational technology and IT together, enabling post-breach resilience and situational awareness across physical and digital environments.",date:"Dec 24, 2025",link:"https://www.constellationr.com/blog-news/news-analysis-servicenow-buys-armis-top-5-trends-2026-0"},
+    {source:"NGenious Solutions",title:"ServiceNow Change Management: Reducing Risk in 2026",desc:"ServiceNow Change Management reduces risk and service disruptions through structured workflows, risk assessment tools, and impact analysis for modern enterprises.",date:"Jan 15, 2026",link:"https://ngenioussolutions.com/blog/category/servicenow-blogs/"},
+    {source:"NGenious Solutions",title:"End-to-End Workflow Automation Across IT, HR and Security on ServiceNow",desc:"ServiceNow offers end-to-end workflow automation across IT, HR, security, governance, and development operations with ITSM, ITOM, and CMDB as the foundation.",date:"Jan 5, 2026",link:"https://ngenioussolutions.com/blog/category/servicenow-blogs/"},
+    {source:"ServiceNow Community",title:"ITSM Blog: Autonomous IT and Zero-Touch Operations in 2026",desc:"Every autonomous IT story follows the same arc — but ServiceNow is pushing past the script with real agentic workflows and zero-touch service management.",date:"Mar 2026",link:"https://www.servicenow.com/community/itsm-blog/bg-p/it-service-management-blog"}
+  ];
+  try {
+    const results = await Promise.allSettled(feeds.map(function(f) {
+      return fetch(proxy + encodeURIComponent(f.url)).then(function(r){return r.json();}).then(function(d){return Object.assign({},d,{label:f.label});});
+    }));
+    var articles = [];
+    results.forEach(function(r) {
+      if (r.status === "fulfilled" && r.value.items) {
+        r.value.items.slice(0,4).forEach(function(item) {
+          articles.push({source:r.value.label,title:item.title,desc:item.description ? item.description.replace(/<[^>]*>/g,"").slice(0,120)+"..." : "",date:item.pubDate ? new Date(item.pubDate).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}) : "",link:item.link||"#"});
+        });
+      }
+    });
+    if (articles.length === 0) throw new Error("No articles");
+    articles = articles.sort(function(){return Math.random()-0.5;}).slice(0,9);
+    grid.innerHTML = articles.map(function(a) {
+      return "<a class='news-card' href='" + a.link + "' target='_blank' rel='noopener'><div class='news-source'>" + a.source + "</div><div class='news-headline'>" + a.title + "</div><div class='news-desc'>" + a.desc + "</div><div class='news-date'>" + a.date + "</div></a>";
+    }).join("");
+  } catch(err) {
+    grid.innerHTML = fallback.map(function(a) {
+      return "<a class='news-card' href='" + a.link + "' target='_blank' rel='noopener'><div class='news-source'>" + a.source + "</div><div class='news-headline'>" + a.title + "</div><div class='news-desc'>" + a.desc + "</div><div class='news-date'>" + a.date + "</div></a>";
+    }).join("");
+  }
+}
+
+function showPage(name) {
+  var pages = document.querySelectorAll(".page");
+  for (var i = 0; i < pages.length; i++) pages[i].classList.remove("active");
+  document.getElementById("page-" + name).classList.add("active");
+  var links = document.querySelectorAll(".nav-links a");
+  for (var j = 0; j < links.length; j++) links[j].classList.remove("active");
+  var map = {home:"nav-home",products:"nav-products",partners:"nav-partners",live:"nav-live",about:"nav-about"};
+  if (map[name]) document.getElementById(map[name]).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+  if (name === "live") { renderMod570(); setTimeout(fetchNews, 100); }
+}
+
+renderSal();
+renderRates();
+renderCerts();
+renderLoc();
+renderChart();
+</script>
+</body>
+</html>
