@@ -31,7 +31,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 1.5rem;height:64px
 .nav-links a.active{color:var(--purple-light);}
 .nav-cta{background:var(--purple);color:#fff;border:none;padding:9px 22px;border-radius:6px;font-size:13px;font-family:var(--font-body);font-weight:500;cursor:pointer;transition:opacity 0.2s;flex-shrink:0;}
 .nav-cta:hover{opacity:0.85;}
-/* Hamburger */
 .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
 .nav-hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all 0.3s;}
 .mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;background:rgba(8,8,8,0.97);backdrop-filter:blur(20px);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2rem;}
@@ -65,34 +64,32 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 1.5rem;height:64px
 .stat-num{font-family:var(--font-display);font-size:2rem;font-weight:800;}
 .stat-num span{color:var(--purple);}
 .stat-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:3px;}
-.sect{padding:7rem 2.5rem;max-width:1100px;margin:0 auto;}
+.sect{padding:6rem 2.5rem;max-width:1100px;margin:0 auto;}
 .sect-label{font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:1rem;}
 .sect-title{font-family:var(--font-display);font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-0.02em;line-height:1.1;margin-bottom:1rem;}
 .sect-sub{color:var(--muted);font-size:1rem;max-width:480px;line-height:1.8;font-weight:300;}
-.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:3rem;}
-.prod-card{background:var(--surface);padding:2rem;transition:background 0.2s;position:relative;cursor:pointer;}
-.prod-card:hover{background:var(--surface2);}
-.prod-card.featured{border-top:2px solid var(--purple);}
-.prod-icon{width:44px;height:44px;background:var(--purple-dim);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;font-size:20px;}
-.prod-tag{position:absolute;top:1.25rem;right:1.25rem;font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:3px 10px;border-radius:99px;}
-.tag-live{background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);}
-.tag-soon{background:var(--purple-dim);color:var(--purple-light);border:1px solid rgba(139,92,246,0.25);}
-.prod-name{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;}
-.prod-desc{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
-.prod-arrow{margin-top:1.25rem;font-size:13px;color:var(--purple);font-weight:500;display:flex;align-items:center;gap:5px;transition:gap 0.2s;}
-.prod-card:hover .prod-arrow{gap:10px;}
-.creator-band{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:6rem 2.5rem;}
-.creator-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
-.creator-cards{display:flex;flex-direction:column;gap:1rem;}
-.creator-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:flex;align-items:flex-start;gap:1rem;transition:border-color 0.2s;}
-.creator-card:hover{border-color:rgba(139,92,246,0.3);}
-.creator-icon{width:36px;height:36px;background:var(--purple-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.creator-card-title{font-family:var(--font-display);font-size:13px;font-weight:700;margin-bottom:3px;}
-.creator-card-desc{font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;}
-.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2.5rem;margin-top:3rem;}
-.step-num{font-family:var(--font-display);font-size:3.5rem;font-weight:800;color:rgba(139,92,246,0.15);line-height:1;margin-bottom:0.75rem;}
-.step-title{font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:0.5rem;}
-.step-desc{font-size:13px;color:var(--muted);line-height:1.75;font-weight:300;}
+.two-path{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem;}
+.path-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2.5rem;position:relative;overflow:hidden;cursor:pointer;transition:border-color 0.2s,background 0.2s;}
+.path-card:hover{background:var(--surface2);}
+.path-card.tech-card:hover{border-color:rgba(139,92,246,0.35);}
+.path-card.gear-card:hover{border-color:rgba(245,200,66,0.35);}
+.path-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;}
+.path-card.tech-card::before{background:linear-gradient(90deg,var(--purple),rgba(139,92,246,0.2));}
+.path-card.gear-card::before{background:linear-gradient(90deg,var(--gold),rgba(245,200,66,0.2));}
+.path-icon{font-size:2.5rem;margin-bottom:1.25rem;display:block;}
+.path-title{font-family:var(--font-display);font-size:1.4rem;font-weight:800;margin-bottom:0.5rem;}
+.path-card.tech-card .path-title{color:var(--purple-light);}
+.path-card.gear-card .path-title{color:var(--gold);}
+.path-desc{font-size:13px;color:var(--muted);line-height:1.8;font-weight:300;margin-bottom:1.5rem;}
+.path-features{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.75rem;}
+.path-feature{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;}
+.tech-card .path-feature::before{content:"→";color:var(--purple-light);font-size:11px;flex-shrink:0;}
+.gear-card .path-feature::before{content:"→";color:var(--gold);font-size:11px;flex-shrink:0;}
+.path-cta{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:10px 20px;border-radius:8px;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);}
+.tech-card .path-cta{background:var(--purple-dim);color:var(--purple-light);border:1px solid rgba(139,92,246,0.3);}
+.tech-card .path-cta:hover{background:var(--purple);color:#fff;}
+.gear-card .path-cta{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border);}
+.gear-card .path-cta:hover{background:var(--gold);color:#0a0a0a;}
 .access-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2.5rem 1.5rem;text-align:center;position:relative;overflow:hidden;max-width:800px;margin:0 auto;}
 .access-glow{position:absolute;top:-60%;left:50%;transform:translateX(-50%);width:500px;height:400px;background:radial-gradient(ellipse,rgba(139,92,246,0.15) 0%,transparent 70%);pointer-events:none;}
 .access-form{display:flex;gap:8px;max-width:440px;margin:0 auto;flex-wrap:wrap;}
@@ -103,91 +100,51 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 1.5rem;height:64px
 footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
 .footer-left{font-size:12px;color:var(--muted2);}
 .footer-left span{color:var(--purple);}
-.footer-right{display:flex;align-items:center;gap:1.5rem;}
+.footer-right{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
 .footer-right span{font-size:12px;color:var(--muted2);}
 .footer-by em{font-style:normal;color:var(--muted);}
-.page-header{padding:8rem 2.5rem 3rem;max-width:1200px;margin:0 auto;border-bottom:1px solid var(--border);}
-.partner-header{padding:6rem 2.5rem 3rem;max-width:1200px;margin:0 auto;border-bottom:1px solid var(--border);display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;}
-.partner-intro-badge{display:flex;align-items:center;gap:8px;background:var(--purple-dim);border:1px solid rgba(139,92,246,0.25);border-radius:10px;padding:0.75rem 1.25rem;white-space:nowrap;}
-.partner-intro-badge span{font-size:12px;color:var(--purple-light);font-weight:500;}
-.spotlight-section{max-width:1200px;margin:0 auto;padding:2.5rem 2.5rem 0;}
-.spotlight-label{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;}
-.spotlight-label-text{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);}
-.spotlight-bar{flex:1;height:1px;background:linear-gradient(90deg,var(--gold-border),transparent);}
-.spotlight-card{background:var(--surface);border:1px solid var(--gold-border);border-radius:16px;padding:2.5rem;position:relative;overflow:hidden;}
-.spotlight-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),rgba(245,200,66,0.3));}
-.spotlight-glow{position:absolute;top:-40%;right:-10%;width:400px;height:400px;background:radial-gradient(ellipse,rgba(245,200,66,0.06) 0%,transparent 70%);pointer-events:none;}
-.spotlight-inner{display:grid;grid-template-columns:auto 1fr auto;gap:2rem;align-items:start;}
-.spotlight-logo{width:72px;height:72px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.4rem;font-weight:800;color:var(--gold);flex-shrink:0;}
-.spotlight-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.5rem;}
-.spotlight-name{font-family:var(--font-display);font-size:1.4rem;font-weight:800;margin-bottom:0.25rem;}
-.spotlight-tagline{font-size:13px;color:var(--muted);font-weight:300;margin-bottom:1rem;}
-.spotlight-modules{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem;}
-.mod-tag{font-size:11px;padding:3px 10px;border-radius:6px;background:var(--purple-dim);color:var(--purple-light);border:1px solid rgba(139,92,246,0.2);}
-.spotlight-bio{font-size:13px;color:var(--muted);line-height:1.8;font-weight:300;max-width:600px;}
-.spotlight-stats{display:flex;flex-direction:column;gap:1rem;min-width:180px;}
-.spotlight-stat{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;text-align:center;}
-.spotlight-stat-val{font-family:var(--font-display);font-size:1.4rem;font-weight:800;color:var(--gold);}
-.spotlight-stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px;}
-.spotlight-services{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
-.spotlight-service{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem;}
-.spotlight-service-title{font-family:var(--font-display);font-size:12px;font-weight:700;margin-bottom:4px;}
-.spotlight-service-desc{font-size:11px;color:var(--muted);line-height:1.6;}
-.btn-intro{background:var(--gold);color:#0a0a0a;border:none;padding:11px 22px;border-radius:8px;font-size:13px;font-family:var(--font-body);font-weight:700;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
-.btn-intro:hover{opacity:0.88;transform:translateY(-1px);}
-.featured-section{max-width:1200px;margin:2rem auto 0;padding:0 2.5rem;}
-.section-divider{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;}
-.section-divider-text{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple-light);}
-.section-divider-bar{flex:1;height:1px;background:linear-gradient(90deg,rgba(139,92,246,0.3),transparent);}
-.featured-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1rem;}
-.featured-card{background:var(--surface);border:1px solid rgba(139,92,246,0.2);border-radius:14px;padding:1.75rem;position:relative;overflow:hidden;transition:border-color 0.2s,background 0.2s;}
-.featured-card:hover{border-color:rgba(139,92,246,0.4);background:var(--surface2);}
-.featured-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),rgba(139,92,246,0.2));}
-.featured-card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;}
-.featured-logo{width:48px;height:48px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--purple-light);}
-.featured-badge{font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--purple-dim);color:var(--purple-light);border:1px solid rgba(139,92,246,0.25);}
-.featured-name{font-family:var(--font-display);font-size:1.05rem;font-weight:700;margin-bottom:3px;}
-.featured-tagline{font-size:12px;color:var(--muted);margin-bottom:0.75rem;font-weight:300;}
-.featured-modules{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:0.75rem;}
-.featured-bio{font-size:12px;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:1rem;}
-.featured-meta{display:flex;align-items:center;justify-content:space-between;padding-top:0.75rem;border-top:1px solid var(--border);}
-.featured-meta-item{text-align:center;}
-.featured-meta-val{font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--purple-light);}
-.featured-meta-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
-.btn-intro-sm{background:transparent;color:var(--purple-light);border:1px solid rgba(139,92,246,0.3);padding:8px 16px;border-radius:7px;font-size:12px;font-family:var(--font-body);font-weight:500;cursor:pointer;transition:all 0.2s;}
-.btn-intro-sm:hover{background:var(--purple-dim);border-color:var(--purple);}
-.listed-section{max-width:1200px;margin:2rem auto 0;padding:0 2.5rem 3rem;}
-.listed-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
-.listed-card{background:var(--surface);padding:1.25rem 1.5rem;transition:background 0.2s;display:flex;align-items:center;gap:1rem;}
-.listed-card:hover{background:var(--surface2);}
-.listed-logo{width:38px;height:38px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:0.8rem;font-weight:800;color:var(--muted);flex-shrink:0;}
-.listed-info{flex:1;min-width:0;}
-.listed-name{font-size:13px;font-weight:500;margin-bottom:2px;}
-.listed-spec{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.listed-badge{font-size:9px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 7px;border-radius:99px;background:var(--teal-dim);color:var(--teal);border:1px solid var(--teal-border);white-space:nowrap;}
-.tier-section{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 2.5rem;margin-top:3rem;}
-.tier-inner{max-width:1000px;margin:0 auto;}
-.tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem;}
-.tier-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:2rem;position:relative;transition:border-color 0.2s;}
-.tier-card.pop{border-color:rgba(139,92,246,0.4);background:var(--surface2);}
-.tier-card.spotlight-t{border-color:var(--gold-border);}
-.tier-pop-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--purple);color:#fff;font-size:10px;font-weight:700;padding:3px 14px;border-radius:99px;letter-spacing:0.06em;white-space:nowrap;}
-.tier-name{font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:0.25rem;}
-.tier-card.spotlight-t .tier-name{color:var(--gold);}
-.tier-card.pop .tier-name{color:var(--purple-light);}
-.tier-price{font-family:var(--font-display);font-size:2rem;font-weight:800;line-height:1;margin-bottom:0.25rem;}
-.tier-period{font-size:12px;color:var(--muted);}
-.tier-divider{height:1px;background:var(--border);margin:1.25rem 0;}
-.tier-features{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.5rem;}
-.tier-feature{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--muted);line-height:1.5;}
-.tier-feature-dot{width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;margin-top:1px;}
-.tier-feature-dot.yes{background:var(--teal-dim);color:var(--teal);border:1px solid var(--teal-border);}
-.tier-feature-dot.no{background:rgba(107,114,128,0.1);color:#555;border:1px solid rgba(107,114,128,0.15);}
-.tier-feature.active{color:var(--text);}
-.tier-btn{width:100%;padding:11px;border-radius:8px;font-size:13px;font-family:var(--font-body);font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:transparent;color:var(--muted);}
-.tier-card.pop .tier-btn{background:var(--purple);color:#fff;border-color:transparent;}
-.tier-card.pop .tier-btn:hover{background:var(--purple-light);}
-.tier-card.spotlight-t .tier-btn{background:var(--gold-dim);color:var(--gold);border-color:var(--gold-border);}
+/* CLOTHING PORTAL */
+.portal-hero{padding:7rem 2.5rem 3rem;max-width:1200px;margin:0 auto;border-bottom:1px solid var(--border);}
+.portal-hero h2{font-family:var(--font-display);font-size:clamp(2rem,4vw,3.5rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;margin-bottom:0.75rem;}
+.portal-hero h2 span{color:var(--gold);}
+.gear-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-top:2rem;}
+.gear-card-item{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color 0.2s,background 0.2s;}
+.gear-card-item:hover{border-color:var(--gold-border);background:var(--surface2);}
+.gear-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:4rem;background:var(--surface2);border-bottom:1px solid var(--border);}
+.gear-info{padding:1.25rem 1.5rem;}
+.gear-name{font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:4px;}
+.gear-desc{font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;margin-bottom:0.75rem;}
+.gear-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.gear-tag{font-size:10px;padding:2px 8px;border-radius:4px;background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border);}
+/* FORM */
+.portal-form-section{max-width:720px;margin:0 auto;padding:3rem 2.5rem 5rem;}
+.portal-form-wrap{background:var(--surface);border:1px solid var(--gold-border);border-radius:16px;padding:2.5rem;position:relative;overflow:hidden;}
+.portal-form-wrap::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),rgba(245,200,66,0.2));}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.form-field{display:flex;flex-direction:column;gap:6px;}
+.form-label{font-size:11px;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;font-weight:500;}
+.form-input{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);outline:none;transition:border-color 0.2s;width:100%;}
+.form-input:focus{border-color:var(--gold-border);}
+.form-input::placeholder{color:var(--muted2);}
+select.form-input{cursor:pointer;}
+textarea.form-input{resize:vertical;min-height:90px;}
+.checkbox-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;margin-top:4px;}
+.checkbox-item{display:flex;align-items:center;gap:8px;cursor:pointer;}
+.checkbox-item input{accent-color:var(--gold);width:15px;height:15px;cursor:pointer;}
+.checkbox-item label{font-size:13px;color:var(--muted);cursor:pointer;}
+.upload-zone{border:2px dashed rgba(245,200,66,0.25);border-radius:10px;padding:2rem;text-align:center;cursor:pointer;transition:border-color 0.2s;background:var(--surface2);}
+.upload-zone:hover{border-color:var(--gold-border);}
+.upload-icon{font-size:2rem;margin-bottom:0.5rem;}
+.upload-text{font-size:13px;color:var(--muted);font-weight:300;}
+.upload-text strong{color:var(--gold);}
+.form-divider{font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:8px;margin:1.5rem 0 1rem;}
+.submit-btn{width:100%;padding:14px;background:var(--gold);color:#0a0a0a;border:none;border-radius:10px;font-family:var(--font-display);font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.2s;margin-top:0.5rem;}
+.submit-btn:hover{opacity:0.88;transform:translateY(-1px);}
+.quality-banner{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;align-items:flex-start;gap:1rem;margin:2rem 2.5rem 0;max-width:1200px;margin-left:auto;margin-right:auto;}
+.quality-banner-icon{font-size:1.5rem;flex-shrink:0;}
+.quality-banner-text{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+.quality-banner-text strong{color:var(--text);}
+/* LIVE DATA */
 .live-header{padding:6rem 2.5rem 2rem;max-width:1400px;margin:0 auto;border-bottom:1px solid var(--border);}
 .live-header h2{font-family:var(--font-display);font-size:1.8rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.4rem;}
 .live-header p{font-size:13px;color:var(--muted);margin-bottom:1rem;max-width:640px;}
@@ -261,67 +218,35 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;align
 .news-headline{font-family:var(--font-display);font-size:0.88rem;font-weight:700;line-height:1.4;margin-bottom:0.5rem;color:var(--text);}
 .news-desc{font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;margin-bottom:0.75rem;}
 .news-date{font-size:10px;color:var(--muted2);}
-.news-loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:3rem;color:var(--muted);font-size:13px;}
-.news-spinner{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin 0.8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
 .mod570-card{border-color:rgba(139,92,246,0.25);position:relative;overflow:hidden;}
 .mod570-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),rgba(139,92,246,0.2));}
 .mod570-card:hover{border-color:rgba(139,92,246,0.5);}
 .mod570-source{color:var(--purple-light) !important;}
-
-/* ── MOBILE RESPONSIVE ── */
+/* MOBILE */
 @media(max-width:768px){
-  /* Nav */
   .nav-links,.nav-cta{display:none;}
   .nav-hamburger{display:flex;}
   nav{padding:0 1.25rem;}
-
-  /* Hero */
   .hero{padding:6rem 1.25rem 3rem;}
-  .hero h1{font-size:2.6rem;}
+  .hero h1{font-size:2.4rem;}
   .hero-actions{flex-direction:column;width:100%;}
   .hero-actions .btn-primary,.hero-actions .btn-ghost{width:100%;text-align:center;}
-
-  /* Stats */
   .stats-bar{gap:1.5rem;padding:1.5rem 1rem;}
   .stat-num{font-size:1.5rem;}
-
-  /* Sections */
   .sect{padding:3rem 1.25rem;}
-  .creator-band{padding:3rem 1.25rem;}
-  .creator-inner{grid-template-columns:1fr;gap:2rem;}
-
-  /* Access form */
+  .two-path{grid-template-columns:1fr;}
   .access-wrap{padding:2rem 1.25rem;}
   .access-form{flex-direction:column;}
   .access-form input,.access-form .btn-primary{width:100%;}
-
-  /* Footer */
   footer{flex-direction:column;align-items:flex-start;padding:1.5rem 1.25rem;gap:0.5rem;}
   .footer-right{flex-direction:column;gap:0.25rem;}
-
-  /* Partner header */
-  .partner-header{flex-direction:column;align-items:flex-start;padding:5rem 1.25rem 2rem;}
-  .partner-intro-badge{white-space:normal;}
-
-  /* Spotlight */
-  .spotlight-section{padding:1.5rem 1.25rem 0;}
-  .spotlight-card{padding:1.5rem 1.25rem;}
-  .spotlight-inner{grid-template-columns:1fr;gap:1.25rem;}
-  .spotlight-stats{flex-direction:row;flex-wrap:wrap;min-width:unset;}
-  .spotlight-stat{flex:1;min-width:80px;}
-  .spotlight-services{grid-template-columns:1fr;}
-
-  /* Featured/Listed */
-  .featured-section,.listed-section{padding:0 1.25rem 2rem;}
-  .featured-grid{grid-template-columns:1fr;}
-
-  /* Tier grid */
-  .tier-section{padding:3rem 1.25rem;}
-  .tier-grid{grid-template-columns:1fr;}
-  .tier-card.pop{margin-top:0.5rem;}
-
-  /* Live data */
+  .portal-hero{padding:5rem 1.25rem 2rem;}
+  .gear-grid{grid-template-columns:1fr 1fr;}
+  .quality-banner{margin:1.5rem 1.25rem 0;}
+  .portal-form-section{padding:2rem 1.25rem 3rem;}
+  .portal-form-wrap{padding:1.5rem 1.25rem;}
+  .form-grid{grid-template-columns:1fr;}
+  .checkbox-grid{grid-template-columns:1fr 1fr;}
   .live-header{padding:5rem 1.25rem 1.5rem;}
   .dash-embed{padding:1rem 1.25rem;}
   .stat-row{grid-template-columns:1fr 1fr;}
@@ -329,19 +254,19 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;align
   .btm-grid{grid-template-columns:1fr;}
   .cert-grid{grid-template-columns:repeat(3,1fr);}
   .sal-tbl th:nth-child(2),.sal-tbl td:nth-child(2){display:none;}
-
-  /* News */
   .news-section{padding:0 1.25rem 2rem;}
   .news-header{flex-direction:column;align-items:flex-start;gap:0.75rem;}
   .news-grid{grid-template-columns:1fr;}
-
-  /* Page header */
-  .page-header{padding:5rem 1.25rem 2rem;}
+}
+@media(max-width:480px){
+  .gear-grid{grid-template-columns:1fr;}
+  .hero h1{font-size:2rem;}
+  .checkbox-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
-
+<!-- NAV -->
 <nav>
   <div class="nav-logo" onclick="showPage('home');closeMobileMenu()">
     <div class="nav-logo-lockup">
@@ -351,9 +276,9 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;align
   </div>
   <div class="nav-links">
     <a id="nav-home" class="active" onclick="showPage('home')">Home</a>
-    <a id="nav-products" onclick="showPage('products')">Products</a>
-    <a id="nav-partners" onclick="showPage('partners')">Partner Network</a>
     <a id="nav-live" onclick="showPage('live')">Live Data</a>
+    <a id="nav-portal" onclick="showPage('portal')">Clothing Portal</a>
+    <a id="nav-partners" onclick="showPage('partners')">Partner Network</a>
     <a id="nav-about" onclick="showPage('about')">About</a>
   </div>
   <button class="nav-cta" onclick="showPage('about')">Request Access</button>
@@ -361,78 +286,70 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;align
     <span></span><span></span><span></span>
   </button>
 </nav>
-
 <!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
   <a onclick="showPage('home');closeMobileMenu()">Home</a>
-  <a onclick="showPage('products');closeMobileMenu()">Products</a>
-  <a onclick="showPage('partners');closeMobileMenu()">Partner Network</a>
   <a onclick="showPage('live');closeMobileMenu()">Live Data</a>
+  <a onclick="showPage('portal');closeMobileMenu()">Clothing Portal</a>
+  <a onclick="showPage('partners');closeMobileMenu()">Partner Network</a>
   <a onclick="showPage('about');closeMobileMenu()">About</a>
   <button class="btn-primary" onclick="showPage('about');closeMobileMenu()">Request Access</button>
 </div>
-
 <!-- HOME -->
 <div class="page active" id="page-home">
   <div class="hero">
-    <div class="hero-grid"></div><div class="hero-glow"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
     <div class="hero-badge"><span class="pulse"></span>&nbsp; Now accepting applications</div>
     <h1>The workflow ecosystem<br/>for <em>modern creators</em></h1>
     <div class="tagline">Create Your Legacy</div>
     <div class="hero-byline">by <span>Tommy Burnell</span></div>
-    <p>Workflow tools, verified connections, live market data, and informational courses by verified creators — built for the people building something real.</p>
+    <p>Live ServiceNow market intelligence and premium custom gear for your team — built from real experience, for the people building something real.</p>
     <div class="hero-actions">
       <button class="btn-primary" onclick="showPage('about')">Request Access</button>
-      <button class="btn-ghost" onclick="showPage('products')">View Products →</button>
+      <button class="btn-ghost" onclick="showPage('live')">View Live Data →</button>
     </div>
   </div>
   <div class="stats-bar">
-    <div class="stat"><div class="stat-num">500<span>+</span></div><div class="stat-lbl">Verified Connections</div></div>
-    <div class="stat"><div class="stat-num">3<span>+</span></div><div class="stat-lbl">Platform Tools</div></div>
+    <div class="stat"><div class="stat-num">18<span>–20K</span></div><div class="stat-lbl">Open SN Roles (US)</div></div>
+    <div class="stat"><div class="stat-num">$145<span>K</span></div><div class="stat-lbl">Avg. Senior Dev Salary</div></div>
     <div class="stat"><div class="stat-num">100<span>%</span></div><div class="stat-lbl">Invite Only</div></div>
-    <div class="stat"><div class="stat-num">US<span> & Global</span></div><div class="stat-lbl">Coverage</div></div>
+    <div class="stat"><div class="stat-num">Mod<span>570</span></div><div class="stat-lbl">Quality Gear</div></div>
   </div>
   <div class="sect">
     <div class="sect-label">Platform</div>
-    <div class="sect-title">Tools built by a creator,<br/>for creators</div>
-    <p class="sect-sub">Every tool in ModWorkflows comes from real experience — in ServiceNow, in clothing, in building businesses from scratch.</p>
-    <div class="prod-grid">
-      <div class="prod-card featured" onclick="showPage('products')"><span class="prod-tag tag-live">Available Now</span><div class="prod-icon">🏭</div><div class="prod-name">Manufacturer Directory</div><p class="prod-desc">Verified connections to clothing manufacturers for streetwear and athletic wear. Filtered, vetted, and ready to work with.</p><div class="prod-arrow">Explore Directory →</div></div>
-      <div class="prod-card featured" onclick="showPage('live')"><span class="prod-tag tag-live">Live Now</span><div class="prod-icon">📊</div><div class="prod-name">ServiceNow Market Intelligence</div><p class="prod-desc">Real-time salary benchmarks, contract rates, and demand signals across the ServiceNow ecosystem.</p><div class="prod-arrow">View Dashboard →</div></div>
-      <div class="prod-card featured" onclick="showPage('products')"><span class="prod-tag tag-live">Available Now</span><div class="prod-icon">🎓</div><div class="prod-name">Creator Courses</div><p class="prod-desc">Informational courses built by verified creators with real experience and real knowledge in their niches. Learn from people who have actually done it.</p><div class="prod-arrow">Browse Courses →</div></div>
-      <div class="prod-card"><span class="prod-tag tag-soon">Coming Soon</span><div class="prod-icon">🚀</div><div class="prod-name">Build-A-Brand</div><p class="prod-desc">Custom workflows designed to help you build your next million dollar idea — from concept to execution, step by step.</p><div class="prod-arrow">Learn More →</div></div>
-      <div class="prod-card"><span class="prod-tag tag-soon">Coming Soon</span><div class="prod-icon">📋</div><div class="prod-name">RFQ Manager</div><p class="prod-desc">Send quote requests to multiple manufacturers at once. Track responses and manage your entire sourcing pipeline.</p><div class="prod-arrow">Learn More →</div></div>
-      <div class="prod-card"><span class="prod-tag tag-soon">Coming Soon</span><div class="prod-icon">📐</div><div class="prod-name">Tech Pack Builder</div><p class="prod-desc">Production-ready spec sheet templates built for streetwear and athletic garment construction.</p><div class="prod-arrow">Learn More →</div></div>
-    </div>
-  </div>
-  <div class="creator-band">
-    <div class="creator-inner">
-      <div>
-        <div class="sect-label">The vision</div>
-        <div class="sect-title" style="font-size:clamp(1.6rem,3.5vw,2.5rem);">Two worlds.<br/>One platform.</div>
-        <p style="color:var(--muted);font-size:14px;line-height:1.9;margin-top:1rem;font-weight:300;">ModWorkflows sits at the intersection of two industries Tommy Burnell knows inside and out — enterprise technology and the creator economy. The tools here are not built for everyone. They are built for the people serious enough to need them.</p>
+    <div class="sect-title">Two tools.<br/>One platform.</div>
+    <p class="sect-sub">ModWorkflows is built around two things Tommy Burnell knows inside and out — ServiceNow and premium streetwear. Pick your path.</p>
+    <div class="two-path">
+      <div class="path-card tech-card" onclick="showPage('live')">
+        <span class="path-icon">📊</span>
+        <div class="path-title">ServiceNow Intelligence</div>
+        <p class="path-desc">Real salary data, contract rates, and demand signals straight from active placements in the ecosystem. Not scraped. Not estimated. Real.</p>
+        <div class="path-features">
+          <div class="path-feature">Live salary benchmarks by role</div>
+          <div class="path-feature">Contract &amp; freelance rate tiers</div>
+          <div class="path-feature">Cert market value rankings</div>
+          <div class="path-feature">Top modules to study for ROI</div>
+          <div class="path-feature">Mod570 &amp; ecosystem news feed</div>
+        </div>
+        <button class="path-cta">View Live Data →</button>
       </div>
-      <div class="creator-cards">
-        <div class="creator-card"><div class="creator-icon">⚙️</div><div><div class="creator-card-title">ServiceNow Expertise</div><div class="creator-card-desc">Live market intelligence, verified partner network, and contract rate benchmarks — powered by real industry experience.</div></div></div>
-        <div class="creator-card"><div class="creator-icon">👕</div><div><div class="creator-card-title">Clothing and Brand Building</div><div class="creator-card-desc">Verified connections to manufacturers built for streetwear and athletic brands — the resource that did not exist until now.</div></div></div>
-        <div class="creator-card"><div class="creator-icon">🔮</div><div><div class="creator-card-title">More Coming</div><div class="creator-card-desc">ModWorkflows grows as the vision grows. RFQ tools, tech packs, drop calendars — the roadmap is just getting started.</div></div></div>
-      </div>
-    </div>
-  </div>
-  <div style="padding:7rem 2.5rem;">
-    <div style="max-width:1100px;margin:0 auto;">
-      <div class="sect-label">Process</div>
-      <div class="sect-title">Built for people<br/>who move with intention</div>
-      <p class="sect-sub">ModWorkflows removes the friction between having an idea and executing on it.</p>
-      <div class="steps">
-        <div class="step"><div class="step-num">01</div><div class="step-title">Request access</div><p class="step-desc">Apply for an invite. We review each application to keep the network intentional and quality high.</p></div>
-        <div class="step"><div class="step-num">02</div><div class="step-title">Access your tools</div><p class="step-desc">Get into the platform and use the tools built for your world — ServiceNow, streetwear, or both.</p></div>
-        <div class="step"><div class="step-num">03</div><div class="step-title">Connect directly</div><p class="step-desc">Verified connections only. Every introduction is facilitated by Tommy Burnell and ModWorkflows.</p></div>
-        <div class="step"><div class="step-num">04</div><div class="step-title">Build your legacy</div><p class="step-desc">Use ModWorkflows as the operational backbone for whatever you are building. This is your infrastructure.</p></div>
+      <div class="path-card gear-card" onclick="showPage('portal')">
+        <span class="path-icon">👕</span>
+        <div class="path-title">Mod570 Custom Gear</div>
+        <p class="path-desc">Premium custom branded apparel for your team, company, or brand. Hoodies, zip-ups, sweatpants, hats — Mod570 quality with your logo, personally handled through our vendor network.</p>
+        <div class="path-features">
+          <div class="path-feature">Hoodies, zip-ups, sweatpants, hats</div>
+          <div class="path-feature">Your logo + Mod570 branding</div>
+          <div class="path-feature">Personally selected vendors</div>
+          <div class="path-feature">High quality streetwear-grade materials</div>
+          <div class="path-feature">Custom quote for your order</div>
+        </div>
+        <button class="path-cta">Start Your Order →</button>
       </div>
     </div>
   </div>
-  <div style="padding:0 2.5rem 7rem;">
+  <div style="padding:0 2.5rem 6rem;">
     <div class="access-wrap">
       <div class="access-glow"></div>
       <div class="sect-label">Invite Only</div>
@@ -442,61 +359,11 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;align
       <p class="access-note">No spam. No BS. Just an invite when you are approved.</p>
     </div>
   </div>
-  <footer><div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div><div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div></footer>
+  <footer>
+    <div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div>
+    <div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div>
+  </footer>
 </div>
-
-<!-- PRODUCTS -->
-<div class="page" id="page-products">
-  <div class="page-header">
-    <div class="sect-label">All Products</div>
-    <div class="sect-title">ModWorkflows tools</div>
-    <p class="sect-sub">Every tool built with purpose — for creators, founders, and operators serious about what they are building.</p>
-  </div>
-  <div class="sect" style="padding-top:3rem;">
-    <div class="prod-grid">
-      <div class="prod-card featured"><span class="prod-tag tag-live">Available Now</span><div class="prod-icon">🏭</div><div class="prod-name">Manufacturer Directory</div><p class="prod-desc">Verified connections to clothing manufacturers for streetwear and athletic wear.</p><div class="prod-arrow">Explore →</div></div>
-      <div class="prod-card featured" onclick="showPage('live')"><span class="prod-tag tag-live">Live Now</span><div class="prod-icon">📊</div><div class="prod-name">ServiceNow Market Intelligence</div><p class="prod-desc">Real-time salary benchmarks, contract rates, and demand signals.</p><div class="prod-arrow">View Dashboard →</div></div>
-      <div class="prod-card featured"><span class="prod-tag tag-live">Available Now</span><div class="prod-icon">🎓</div><div class="prod-name">Creator Courses</div><p class="prod-desc">Courses built by verified creators with real experience and real knowledge. Topics span ServiceNow, brand building, clothing entrepreneurship, crypto investing, and sales — information you can actually use.</p><div class="prod-arrow">Browse Courses →</div></div>
-      <div class="prod-card"><span class="prod-tag tag-soon">Coming Soon</span><div class="prod-icon">🚀</div><div class="prod-name">Build-A-Brand</div><p class="prod-desc">Custom workflows to help you build your next million dollar idea — from concept to execution, designed by people who've done it.</p><div class="prod-arrow">Learn More →</div></div>
-      <div class="prod-card"><span class="prod-tag tag-soon">Coming Soon</span><div class="prod-icon">📋</div><div class="prod-name">RFQ Manager</div><p class="prod-desc">Send quote requests to multiple manufacturers simultaneously.</p><div class="prod-arrow">Learn More →</div></div>
-      <div class="prod-card"><span class="prod-tag tag-soon">Coming Soon</span><div class="prod-icon">📐</div><div class="prod-name">Tech Pack Builder</div><p class="prod-desc">Production-ready spec sheet templates for streetwear and athletic garments.</p><div class="prod-arrow">Learn More →</div></div>
-      <div class="prod-card"><span class="prod-tag tag-soon">Coming Soon</span><div class="prod-icon">🗓️</div><div class="prod-name">Drop Calendar</div><p class="prod-desc">Plan release windows and track production timelines across your brand calendar.</p><div class="prod-arrow">Learn More →</div></div>
-    </div>
-  </div>
-  <footer><div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div><div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div></footer>
-</div>
-
-<!-- PARTNER NETWORK -->
-<div class="page" id="page-partners">
-  <div style="min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 5rem;position:relative;overflow:hidden;">
-    <div style="position:absolute;top:20%;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(139,92,246,0.15) 0%,transparent 70%);pointer-events:none;"></div>
-    <div style="display:inline-flex;align-items:center;gap:6px;background:var(--purple-dim);border:1px solid rgba(139,92,246,0.3);color:var(--purple-light);font-size:11px;font-weight:500;padding:5px 16px;border-radius:99px;margin-bottom:2rem;letter-spacing:0.08em;text-transform:uppercase;">
-      <span class="pulse"></span>&nbsp; Coming Soon
-    </div>
-    <div style="font-family:var(--font-display);font-size:clamp(2.2rem,5vw,4rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;margin-bottom:1rem;">ServiceNow<br/><span style="color:var(--purple);">Partner Network</span></div>
-    <p style="color:var(--muted);font-size:1rem;max-width:480px;margin:0 auto 2rem;font-weight:300;line-height:1.85;">We are building something intentional here. A verified network of ServiceNow implementation, managed service, and build partners — every introduction facilitated directly through ModWorkflows.</p>
-    <div style="display:flex;flex-direction:column;gap:1rem;align-items:center;max-width:420px;width:100%;">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;width:100%;text-align:left;display:flex;align-items:center;gap:1rem;">
-        <div style="width:36px;height:36px;background:var(--purple-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">✅</div>
-        <div><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Personally Vetted Partners</div><div style="font-size:12px;color:var(--muted);font-weight:300;">Every partner reviewed and approved by Tommy Burnell</div></div>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;width:100%;text-align:left;display:flex;align-items:center;gap:1rem;">
-        <div style="width:36px;height:36px;background:var(--purple-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🤝</div>
-        <div><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Direct Introductions</div><div style="font-size:12px;color:var(--muted);font-weight:300;">No middlemen. Connections made directly through ModWorkflows</div></div>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;width:100%;text-align:left;display:flex;align-items:center;gap:1rem;">
-        <div style="width:36px;height:36px;background:var(--purple-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">⚙️</div>
-        <div><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Implementation, MSP & Custom Build</div><div style="font-size:12px;color:var(--muted);font-weight:300;">Full spectrum of ServiceNow expertise, all in one place</div></div>
-      </div>
-    </div>
-    <div style="margin-top:2.5rem;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
-      <button class="btn-primary" onclick="showPage('about')">Get Notified →</button>
-      <button class="btn-ghost" onclick="showPage('home')">Back to Home</button>
-    </div>
-  </div>
-  <footer><div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div><div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div></footer>
-</div>
-
 <!-- LIVE DATA -->
 <div class="page" id="page-live">
   <div class="live-header">
@@ -577,68 +444,210 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;align
     <div id="mod570Grid" class="news-grid" style="margin-bottom:2.5rem;"></div>
     <div style="height:1px;background:var(--border);margin-bottom:2.5rem;"></div>
     <div class="news-header">
-      <div><div class="news-title">ServiceNow Ecosystem News</div><div class="news-sub">Latest from the ServiceNow community, newsroom &amp; ecosystem — updated live</div></div>
+      <div><div class="news-title">ServiceNow Ecosystem News</div><div class="news-sub">Latest from the ServiceNow community, newsroom &amp; ecosystem</div></div>
       <div class="news-live"><span class="live-dot-g"></span> Live feed</div>
     </div>
-    <div id="newsGrid" class="news-grid"><div class="news-loading"><div class="news-spinner"></div> Loading latest news...</div></div>
+    <div id="newsGrid" class="news-grid"></div>
   </div>
-  <footer><div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div><div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div></footer>
+  <footer>
+    <div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div>
+    <div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div>
+  </footer>
 </div>
-
+<!-- CLOTHING PORTAL -->
+<div class="page" id="page-portal">
+  <div class="portal-hero">
+    <div class="sect-label">Mod570 Clothing Portal</div>
+    <h2>Custom gear for your<br/><span>team or brand</span></h2>
+    <p style="margin-top:1rem;color:var(--muted);font-size:14px;line-height:1.85;font-weight:300;max-width:560px;">Premium custom branded apparel — hoodies, zip-ups, sweatpants, hats. Your logo, Mod570 quality. Personally handled through our vendor network by Tommy Burnell.</p>
+  </div>
+  <div style="max-width:1200px;margin:0 auto;padding:3rem 2.5rem 0;">
+    <div class="sect-label">What We Offer</div>
+    <p style="color:var(--muted);font-size:13px;font-weight:300;margin-bottom:1.5rem;">Every piece is streetwear-grade quality, branded with Mod570 alongside your logo. These are not cheap promotional items.</p>
+    <div class="gear-grid">
+      <div class="gear-card-item">
+        <div class="gear-img">🧥</div>
+        <div class="gear-info">
+          <div class="gear-name">Premium Hoodie</div>
+          <div class="gear-desc">Heavyweight fleece, streetwear cut. Your logo embroidered or screen printed alongside the Mod570 mark.</div>
+          <div class="gear-tags"><span class="gear-tag">Embroidered</span><span class="gear-tag">Screen Print</span><span class="gear-tag">All Sizes</span></div>
+        </div>
+      </div>
+      <div class="gear-card-item">
+        <div class="gear-img">🤐</div>
+        <div class="gear-info">
+          <div class="gear-name">Full Zip-Up</div>
+          <div class="gear-desc">Premium zip hoodie with clean lines. Perfect for team kits and corporate gifting that actually gets worn.</div>
+          <div class="gear-tags"><span class="gear-tag">Embroidered</span><span class="gear-tag">Team Packs</span><span class="gear-tag">All Sizes</span></div>
+        </div>
+      </div>
+      <div class="gear-card-item">
+        <div class="gear-img">👖</div>
+        <div class="gear-info">
+          <div class="gear-name">Sweatpants</div>
+          <div class="gear-desc">Heavyweight joggers with taper. Matching set option available with hoodies and zip-ups for full team kits.</div>
+          <div class="gear-tags"><span class="gear-tag">Embroidered</span><span class="gear-tag">Set Option</span><span class="gear-tag">All Sizes</span></div>
+        </div>
+      </div>
+      <div class="gear-card-item">
+        <div class="gear-img">🧢</div>
+        <div class="gear-info">
+          <div class="gear-name">Custom Hat</div>
+          <div class="gear-desc">Structured and unstructured options. Snapback, dad cap — your brand on premium blanks personally selected by Mod570.</div>
+          <div class="gear-tags"><span class="gear-tag">Embroidered</span><span class="gear-tag">Snapback</span><span class="gear-tag">Dad Cap</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="quality-banner">
+    <div class="quality-banner-icon">⭐</div>
+    <div class="quality-banner-text"><strong>This is Mod570 quality.</strong> Every vendor is personally selected by Tommy Burnell. These are the same manufacturers and blanks used for Mod570's own line — not mass-market promotional products. If it doesn't meet the standard, it doesn't ship.</div>
+  </div>
+  <div class="portal-form-section">
+    <div class="sect-label" style="margin-bottom:0.5rem;">Start Your Order</div>
+    <p style="color:var(--muted);font-size:13px;font-weight:300;margin-bottom:2rem;">Fill out the form below and we'll come back to you with a custom quote within 48 hours.</p>
+    <div class="portal-form-wrap">
+      <div class="form-divider">Your Info</div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-input" placeholder="Jordan"/>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-input" placeholder="Smith"/>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="jordan@company.com"/>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Company / Brand Name</label>
+          <input type="text" class="form-input" placeholder="Acme Corp"/>
+        </div>
+      </div>
+      <div class="form-divider">Order Details</div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label">Estimated Quantity</label>
+          <select class="form-input">
+            <option value="">Select range…</option>
+            <option>10–25 pieces</option>
+            <option>25–50 pieces</option>
+            <option>50–100 pieces</option>
+            <option>100–250 pieces</option>
+            <option>250+ pieces</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Budget Range</label>
+          <select class="form-input">
+            <option value="">Select range…</option>
+            <option>Under $1,000</option>
+            <option>$1,000 – $2,500</option>
+            <option>$2,500 – $5,000</option>
+            <option>$5,000 – $10,000</option>
+            <option>$10,000+</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field" style="margin-bottom:1rem;">
+        <label class="form-label">Products You're Interested In</label>
+        <div class="checkbox-grid">
+          <div class="checkbox-item"><input type="checkbox" id="hoodie"/><label for="hoodie">Premium Hoodie</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="zip"/><label for="zip">Full Zip-Up</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="sweats"/><label for="sweats">Sweatpants</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="hat"/><label for="hat">Custom Hat</label></div>
+        </div>
+      </div>
+      <div class="form-divider">Your Design</div>
+      <div class="form-field" style="margin-bottom:1rem;">
+        <label class="form-label">Logo / Design Upload</label>
+        <div class="upload-zone">
+          <div class="upload-icon">🎨</div>
+          <div class="upload-text"><strong>Click to upload</strong> your logo or design file</div>
+          <div class="upload-text" style="margin-top:4px;font-size:11px;">PNG, SVG, AI, PDF · Max 20MB</div>
+        </div>
+      </div>
+      <div class="form-field" style="margin-bottom:1rem;">
+        <label class="form-label">Additional Notes</label>
+        <textarea class="form-input" placeholder="Tell us more — colors, placement, any specific requirements or ideas…"></textarea>
+      </div>
+      <button class="submit-btn">Submit Order Request →</button>
+      <p style="font-size:11px;color:var(--muted2);text-align:center;margin-top:0.75rem;">We'll review your request and reach out within 48 hours with a custom quote.</p>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div>
+    <div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div>
+  </footer>
+</div>
+<!-- PARTNER NETWORK SNEAK PEEK -->
+<div class="page" id="page-partners">
+  <div style="min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 5rem;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:20%;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(139,92,246,0.15) 0%,transparent 70%);pointer-events:none;"></div>
+    <div style="display:inline-flex;align-items:center;gap:6px;background:var(--purple-dim);border:1px solid rgba(139,92,246,0.3);color:var(--purple-light);font-size:11px;font-weight:500;padding:5px 16px;border-radius:99px;margin-bottom:2rem;letter-spacing:0.08em;text-transform:uppercase;"><span class="pulse"></span>&nbsp; Coming Soon</div>
+    <div style="font-family:var(--font-display);font-size:clamp(2.2rem,5vw,4rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;margin-bottom:1rem;">ServiceNow<br/><span style="color:var(--purple);">Partner Network</span></div>
+    <p style="color:var(--muted);font-size:1rem;max-width:480px;margin:0 auto 2rem;font-weight:300;line-height:1.85;">A verified network of ServiceNow implementation, managed service, and build partners — every introduction facilitated directly through ModWorkflows.</p>
+    <div style="display:flex;flex-direction:column;gap:1rem;align-items:center;max-width:420px;width:100%;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;width:100%;text-align:left;display:flex;align-items:center;gap:1rem;">
+        <div style="width:36px;height:36px;background:var(--purple-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">✅</div>
+        <div><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Personally Vetted Partners</div><div style="font-size:12px;color:var(--muted);font-weight:300;">Every partner reviewed and approved by Tommy Burnell</div></div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;width:100%;text-align:left;display:flex;align-items:center;gap:1rem;">
+        <div style="width:36px;height:36px;background:var(--purple-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🤝</div>
+        <div><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Direct Introductions</div><div style="font-size:12px;color:var(--muted);font-weight:300;">No middlemen. Connections made directly through ModWorkflows</div></div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;width:100%;text-align:left;display:flex;align-items:center;gap:1rem;">
+        <div style="width:36px;height:36px;background:var(--purple-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">⚙️</div>
+        <div><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Implementation, MSP &amp; Custom Build</div><div style="font-size:12px;color:var(--muted);font-weight:300;">Full spectrum of ServiceNow expertise, all in one place</div></div>
+      </div>
+    </div>
+    <div style="margin-top:2.5rem;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+      <button class="btn-primary" onclick="showPage('about')">Get Notified →</button>
+      <button class="btn-ghost" onclick="showPage('home')">Back to Home</button>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div>
+    <div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div>
+  </footer>
+</div>
 <!-- ABOUT -->
 <div class="page" id="page-about">
   <div style="padding:8rem 2.5rem 5rem;max-width:720px;margin:0 auto;">
     <div class="sect-label">About</div>
     <div class="sect-title">Built different,<br/>on purpose</div>
-    <p style="color:var(--muted);font-size:15px;line-height:1.9;margin-bottom:1.25rem;font-weight:300;">ModWorkflows is a DBA under Mod570 LLC — a platform built by Thomas Arden Burnell at the intersection of enterprise technology and the creator economy. ServiceNow market intelligence for professionals. Verified connections for clothing brand founders. Informational courses from real creators. Two worlds, one ecosystem.</p>
-    <p style="color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:2rem;font-weight:300;">Invite-only because quality matters more than volume. Every tool here is built from real experience, not assumptions.</p>
-
-    <!-- What's inside -->
+    <p style="color:var(--muted);font-size:15px;line-height:1.9;margin-bottom:1.25rem;font-weight:300;">ModWorkflows is a DBA under Mod570 LLC — a platform built by Thomas Arden Burnell at the intersection of enterprise technology and the creator economy. ServiceNow market intelligence for professionals. Custom gear for teams and brands. Two worlds, one platform.</p>
+    <p style="color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:2rem;font-weight:300;">Invite-only because quality matters more than volume. Everything here is built from real experience, not assumptions.</p>
     <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:3rem;">
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:flex;align-items:flex-start;gap:1rem;">
         <div style="font-size:20px;flex-shrink:0;">📊</div>
         <div><div style="font-family:var(--font-display);font-size:13px;font-weight:700;margin-bottom:3px;">Live ServiceNow Market Intelligence</div><div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;">Real salary benchmarks and contract rates sourced from active placements — not scraped, not estimated.</div></div>
       </div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:flex;align-items:flex-start;gap:1rem;">
-        <div style="font-size:20px;flex-shrink:0;">🎓</div>
-        <div><div style="font-family:var(--font-display);font-size:13px;font-weight:700;margin-bottom:3px;">Verified Creator Courses</div><div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;">Informational courses with real knowledge to help you level up — built by people with actual experience in their niches, not surface-level content.</div></div>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:flex;align-items:flex-start;gap:1rem;">
-        <div style="font-size:20px;flex-shrink:0;">🏭</div>
-        <div><div style="font-family:var(--font-display);font-size:13px;font-weight:700;margin-bottom:3px;">Manufacturer Directory</div><div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;">Verified connections to clothing manufacturers for streetwear and athletic brands — the resource that didn't exist until now.</div></div>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:flex;align-items:flex-start;gap:1rem;">
         <div style="font-size:20px;flex-shrink:0;">👕</div>
-        <div><div style="font-family:var(--font-display);font-size:13px;font-weight:700;margin-bottom:3px;">Custom Mod570 Gear</div><div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;">Order custom Mod570 gear — personally designed by Mod570 artists with our select clothing partners. Wear the brand.</div></div>
+        <div><div style="font-family:var(--font-display);font-size:13px;font-weight:700;margin-bottom:3px;">Mod570 Custom Gear Portal</div><div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;">Premium custom branded apparel for your team or brand — personally handled through our vendor network. Mod570 quality, your logo.</div></div>
       </div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:flex;align-items:flex-start;gap:1rem;">
-        <div style="font-size:20px;flex-shrink:0;">🚀</div>
-        <div><div style="font-family:var(--font-display);font-size:13px;font-weight:700;margin-bottom:3px;">Build-A-Brand <span style="font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:var(--purple-dim);color:var(--purple-light);border:1px solid rgba(139,92,246,0.25);margin-left:6px;">Coming Soon</span></div><div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;">Custom workflows designed to help you build your next million dollar idea — from concept to execution, built by people who have done it.</div></div>
+        <div style="font-size:20px;flex-shrink:0;">🤝</div>
+        <div><div style="font-family:var(--font-display);font-size:13px;font-weight:700;margin-bottom:3px;">ServiceNow Partner Network <span style="font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:var(--purple-dim);color:var(--purple-light);border:1px solid rgba(139,92,246,0.25);margin-left:6px;">Coming Soon</span></div><div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;">A verified network of ServiceNow implementation, managed service, and build partners — every introduction facilitated directly through ModWorkflows.</div></div>
       </div>
     </div>
-
-    <!-- Read more about Tommy / Mod570 -->
     <div style="margin-bottom:3rem;">
       <div class="sect-label">The Story</div>
       <p style="color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:1.25rem;font-weight:300;">Want to learn more about the person behind ModWorkflows and Mod570? Read the full story below.</p>
       <div style="display:flex;flex-direction:column;gap:0.75rem;">
         <a href="https://mod570.com/blogs/news/the-mod570-story-featuring-arden-founder-of-mod570" target="_blank" rel="noopener" style="background:var(--surface);border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;text-decoration:none;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='rgba(139,92,246,0.5)';this.style.background='var(--surface2)'" onmouseout="this.style.borderColor='rgba(139,92,246,0.2)';this.style.background='var(--surface)'">
-          <div>
-            <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;">The Mod570 Story — Featuring Arden, Founder of Mod570</div>
-            <div style="font-size:11px;color:var(--muted);">mod570.com · Read Article →</div>
-          </div>
+          <div><div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;">The Mod570 Story — Featuring Arden, Founder of Mod570</div><div style="font-size:11px;color:var(--muted);">mod570.com · Read Article →</div></div>
           <div style="font-size:1.2rem;flex-shrink:0;margin-left:1rem;">✦</div>
         </a>
         <a href="https://mod570.com/pages/our-story" target="_blank" rel="noopener" style="background:var(--surface);border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;text-decoration:none;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='rgba(139,92,246,0.5)';this.style.background='var(--surface2)'" onmouseout="this.style.borderColor='rgba(139,92,246,0.2)';this.style.background='var(--surface)'">
-          <div>
-            <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;">Our Story — Thomas Arden Burnell &amp; Mod570</div>
-            <div style="font-size:11px;color:var(--muted);">mod570.com · Read More →</div>
-          </div>
+          <div><div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;">Our Story — Thomas Arden Burnell &amp; Mod570</div><div style="font-size:11px;color:var(--muted);">mod570.com · Read More →</div></div>
           <div style="font-size:1.2rem;flex-shrink:0;margin-left:1rem;">✦</div>
         </a>
       </div>
     </div>
-
     <div class="access-wrap" style="text-align:left;padding:2.5rem;">
       <div class="access-glow"></div>
       <div class="sect-label">Request Access</div>
@@ -649,9 +658,11 @@ footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;align
       <p class="access-note" style="text-align:left;margin-top:0.75rem;">We will review your application and reach out directly.</p>
     </div>
   </div>
-  <footer><div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div><div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div></footer>
+  <footer>
+    <div class="footer-left">© 2025 <span>Mod570 LLC</span> · ModWorkflows is a registered DBA</div>
+    <div class="footer-right"><span class="footer-by">by <em>Tommy Burnell</em></span><span>modworkflows.ai</span></div>
+  </footer>
 </div>
-
 <script>
 const salaryData=[{role:"Mid-Level Developer",tag:"dev",low:100,high:120,median:110,demand:"med"},{role:"Senior Developer",tag:"dev",low:130,high:165,median:148,demand:"high"},{role:"Technical & Solution Architect",tag:"arch",low:160,high:200,median:180,demand:"high"},{role:"Senior Architect",tag:"arch",low:200,high:235,median:218,demand:"high"},{role:"Technical Consultant",tag:"consultant",low:125,high:170,median:148,demand:"med"},{role:"Business Process Consultant",tag:"consultant",low:135,high:160,median:148,demand:"high"},{role:"Engagement Manager",tag:"mgmt",low:125,high:155,median:140,demand:"low"},{role:"Business Analyst",tag:"ba",low:90,high:120,median:105,demand:"high"}];
 const rateData=[{role:"ServiceNow Developer",type:"W2 / 1099",tiers:[{label:"Base",desc:"General development experience",rate:"$60-75/hr"},{label:"Specialized",desc:"SPM, ITOM, ITAM, CSM module focus",rate:"$70-85/hr"},{label:"Niche",desc:"Active CIS certs and niche module experience",rate:"Up to $90/hr"}]},{role:"ServiceNow Architect",type:"W2 / 1099",tiers:[{label:"Base",desc:"Platform architecture experience",rate:"$85-110/hr"},{label:"Specialized",desc:"Deep module or domain expertise",rate:"Up to $120/hr"}]},{role:"ServiceNow Technical Consultant",type:"W2 / 1099",tiers:[{label:"Base",desc:"Technical consulting across modules",rate:"$65-85/hr"},{label:"Niche",desc:"Active CIS certs and advanced module experience",rate:"Up to $90/hr"}]},{role:"ServiceNow BPC",type:"W2 / 1099",tiers:[{label:"Base",desc:"Business Process Consultant experience",rate:"$70-85/hr"},{label:"Niche",desc:"CIS certs with deep BPC specialization",rate:"$85-95/hr"}]},{role:"ServiceNow Engagement Manager",type:"W2 / 1099",tiers:[{label:"Base",desc:"Rate varies depending on project scope",rate:"$70-90/hr"}]},{role:"ServiceNow Business Analyst",type:"W2 / 1099",tiers:[{label:"Base",desc:"General BA experience",rate:"$60-70/hr"},{label:"Niche",desc:"Niche module experience and active CIS certs",rate:"$75-80/hr"}]}];
@@ -659,8 +670,7 @@ const certData=[{name:"CSA",premium:"Med",heat:"warm"},{name:"CIS-ITSM",premium:
 const locData=[{city:"ITOM",avg:"Very High",pct:100},{city:"SPM",avg:"Very High",pct:95},{city:"FSO",avg:"High",pct:88},{city:"ITAM",avg:"High",pct:82},{city:"S2P",avg:"Growing",pct:72},{city:"NowAssist",avg:"Emerging",pct:65}];
 const trendD=[100,120,126,122,118,118,121];
 const trendL=["2020","2021","2022","2023","2024","2025","2026"];
-const mod570Posts=[{title:"Four Dragons - Foundational Health, Fearless Focus, and the Future of Agentic AI",desc:"In the ServiceNow ecosystem, the next wave of transformation is not just technical. It is about how professionals position themselves at the intersection of AI, health, and focused execution.",date:"Mar 6, 2026",link:"https://mod570.com/blogs/news/%F0%9F%90%89-four-dragons-foundational-health-fearless-focus-and-the-future-of-agentic-ai"},{title:"Brandon Wilson - Designing ServiceNow with Intention, Not Shortcuts",desc:"Some careers are built on shortcuts. Brandon Wilson built his the right way. A deep dive into how one of ServiceNow's most respected architects developed his craft with intention and technical rigor.",date:"Jan 23, 2026",link:"https://mod570.com/blogs/news/brandon-wilson-servicenow-cta-expert"},{title:"Jace Benson - Jace.pro and ServiceNow",desc:"ServiceNow has changed lives, and Jace Benson's story is proof. From the community he built at Jace.pro to his impact on how professionals learn and grow in the ecosystem.",date:"Jan 3, 2025",link:"https://mod570.com/blogs/news/jace-benson-jace-pro-servicenow"}];
-
+const mod570Posts=[{title:"Four Dragons - Foundational Health, Fearless Focus, and the Future of Agentic AI",desc:"In the ServiceNow ecosystem, the next wave of transformation is not just technical. It is about how professionals position themselves at the intersection of AI, health, and focused execution.",date:"Mar 6, 2026",link:"https://mod570.com/blogs/news/%F0%9F%90%89-four-dragons-foundational-health-fearless-focus-and-the-future-of-agentic-ai"},{title:"Brandon Wilson - Designing ServiceNow with Intention, Not Shortcuts",desc:"Some careers are built on shortcuts. Brandon Wilson built his the right way.",date:"Jan 23, 2026",link:"https://mod570.com/blogs/news/brandon-wilson-servicenow-cta-expert"},{title:"Jace Benson - Jace.pro and ServiceNow",desc:"ServiceNow has changed lives, and Jace Benson's story is proof. From the community he built at Jace.pro to his impact on how professionals learn and grow in the ecosystem.",date:"Jan 3, 2025",link:"https://mod570.com/blogs/news/jace-benson-jace-pro-servicenow"}];
 function renderSal(f){if(!f)f="all";var max=Math.max.apply(null,salaryData.map(function(r){return r.median;}));var rows=f==="all"?salaryData:salaryData.filter(function(r){return r.tag===f;});document.getElementById("salBody").innerHTML=rows.map(function(r){var pct=Math.round((r.median/max)*100);var dc=r.demand==="high"?"d-hi":r.demand==="med"?"d-me":"d-lo";var dl=r.demand==="high"?"High":r.demand==="med"?"Medium":"Low";return"<tr><td><span style='font-weight:500'>"+r.role+"</span><span class='r-tag'>"+r.tag+"</span></td><td style='min-width:140px'><div style='display:flex;align-items:center;gap:8px'><div class='bar-bg'><div class='bar-fill' style='width:"+pct+"%'></div></div><span style='font-size:11px;color:var(--muted);white-space:nowrap'>$"+r.low+"-"+r.high+"K</span></div></td><td><span style='color:#00e5a0;font-size:13px;font-weight:500'>$"+r.median+"K</span></td><td><span class='dbadge "+dc+"'>"+dl+"</span></td></tr>";}).join("");}
 function dFilter(btn,f){var chips=document.querySelectorAll(".chip");for(var i=0;i<chips.length;i++)chips[i].classList.remove("on");btn.classList.add("on");renderSal(f);}
 function renderRates(){var tierColors=["var(--muted)","#00e5a0","#f5c842"];var tierBg=["rgba(107,114,128,0.12)","rgba(0,153,255,0.08)","rgba(245,200,66,0.08)"];var tierBorder=["rgba(107,114,128,0.2)","rgba(0,153,255,0.2)","rgba(245,200,66,0.2)"];var tierText=["#6b7280","#0099ff","#f5c842"];document.getElementById("rateBody").innerHTML=rateData.map(function(r){var tiersHtml=r.tiers.map(function(t,i){return"<div style='display:flex;align-items:flex-start;justify-content:space-between;padding:6px 0;"+(i<r.tiers.length-1?"border-bottom:1px solid rgba(255,255,255,0.04);":"")+"'><div style='display:flex;align-items:flex-start;gap:8px;'><span style='font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-top:1px;white-space:nowrap;background:"+tierBg[i]+";color:"+tierText[i]+";border:1px solid "+tierBorder[i]+";'>"+t.label+"</span><span style='font-size:11px;color:var(--muted);line-height:1.5;font-weight:300;'>"+t.desc+"</span></div><span style='font-size:12px;font-weight:600;color:"+tierColors[i]+";white-space:nowrap;margin-left:0.75rem;'>"+t.rate+"</span></div>";}).join("");return"<div class='rate-item'><div class='r-role'>"+r.role+"</div><div class='r-type'>"+r.type+"</div>"+tiersHtml+"</div>";}).join("");}
@@ -668,32 +678,10 @@ function renderCerts(){document.getElementById("certBody").innerHTML=certData.ma
 function renderLoc(){var demandColor={"Very High":"#00e5a0","High":"#a78bfa","Growing":"#0099ff","Emerging":"#f5c842"};document.getElementById("locBody").innerHTML=locData.map(function(l,i){var col=demandColor[l.avg]||"#00e5a0";return"<div class='loc-item'><div class='loc-rank'>"+(i+1)+"</div><div style='flex:1'><div class='loc-name'>"+l.city+"</div><div class='loc-bar-bg'><div class='loc-bar-fill' style='width:"+l.pct+"%;background:"+col+";'></div></div></div><div class='loc-avg' style='color:"+col+";'>"+l.avg+"</div></div>";}).join("");}
 function renderChart(){var max=Math.max.apply(null,trendD);document.getElementById("chartBody").innerHTML=trendD.map(function(v,i){var h=Math.round((v/max)*100);var isLast=i===trendD.length-1;var bg=isLast?"background:linear-gradient(180deg,#00e5a0,rgba(0,229,160,0.3));":"";return"<div class='chart-bar' style='height:"+h+"%;position:relative;"+bg+"' title='"+trendL[i]+"'><span class='chart-bar-label'>"+trendL[i]+"</span></div>";}).join("");}
 function renderMod570(){document.getElementById("mod570Grid").innerHTML=mod570Posts.map(function(p){return"<a class='news-card mod570-card' href='"+p.link+"' target='_blank' rel='noopener'><div class='news-source mod570-source'>✦ Mod570 · Tommy Burnell</div><div class='news-headline'>"+p.title+"</div><div class='news-desc'>"+p.desc+"</div><div class='news-date'>"+p.date+"</div></a>";}).join("");}
-
-
-function showPage(name){var pages=document.querySelectorAll(".page");for(var i=0;i<pages.length;i++)pages[i].classList.remove("active");document.getElementById("page-"+name).classList.add("active");var links=document.querySelectorAll(".nav-links a");for(var j=0;j<links.length;j++)links[j].classList.remove("active");var map={home:"nav-home",products:"nav-products",partners:"nav-partners",live:"nav-live",about:"nav-about"};if(map[name])document.getElementById(map[name]).classList.add("active");window.scrollTo({top:0,behavior:"smooth"});if(name==="live"){renderMod570();renderNews();}}
-
+function renderNews(){var grid=document.getElementById("newsGrid");if(!grid)return;var articles=[{source:"ServiceNow Newsroom",title:"ServiceNow Expands Partnership with NVIDIA at GTC 2026",desc:"ServiceNow and NVIDIA announced an expanded partnership to govern the Autonomous Workforce, combining the AI Control Tower with NVIDIA Enterprise AI Factory.",date:"Mar 16, 2026",link:"https://www.servicenow.com/company/media/press-room.html"},{source:"ServiceNow Community",title:"Q1 2026 Release Highlights for Risk and Resilience",desc:"The Q1 2026 release delivers meaningful advances across AI governance, integrated risk management, privacy, third-party risk, and sustainability.",date:"Mar 2026",link:"https://www.servicenow.com/community/grc-articles/q1-2026-release-highlights-for-risk-and-resilience/ta-p/3506080"},{source:"ServiceNow Community",title:"ServiceNow ITSM Named #1 Best Software for IT Management by G2 in 2026",desc:"G2 has named ServiceNow ITSM the number one Best Software for IT Management Products in its 2026 Best Software Awards.",date:"Mar 2026",link:"https://www.servicenow.com/community/itsm-blog/bg-p/it-service-management-blog"},{source:"The Cloud People",title:"Top Trends Every ServiceNow Platform Owner Should Know in 2026",desc:"AI is moving beyond summarizing tickets into agentic workflows where it can take action within defined guardrails.",date:"Feb 26, 2026",link:"https://www.thecloudpeople.com/blog/top-trends-every-servicenow-platform-owner-should-know-in-2026"},{source:"ServiceNow Newsroom",title:"ServiceNow to Announce Q1 2026 Financial Results on April 22",desc:"ServiceNow will release financial results for Q1 ended March 31, 2026, following the close of market on April 22, 2026.",date:"Apr 1, 2026",link:"https://www.businesswire.com/news/home/20260401416571/en/ServiceNow-to-Announce-First-Quarter-2026-Financial-Results-on-April-22"},{source:"Constellation Research",title:"ServiceNow Acquires Armis for $7.75B — Top 5 Trends for 2026",desc:"ServiceNow acquired Armis to bring operational technology and IT together, enabling post-breach resilience and situational awareness.",date:"Dec 24, 2025",link:"https://www.constellationr.com/blog-news/news-analysis-servicenow-buys-armis-top-5-trends-2026-0"},{source:"NGenious Solutions",title:"ServiceNow Change Management: Reducing Risk in 2026",desc:"ServiceNow Change Management reduces risk and service disruptions through structured workflows, risk assessment tools, and impact analysis.",date:"Jan 15, 2026",link:"https://ngenioussolutions.com/blog/category/servicenow-blogs/"},{source:"NGenious Solutions",title:"End-to-End Workflow Automation Across IT, HR and Security",desc:"ServiceNow offers end-to-end workflow automation across IT, HR, security, governance, and development operations.",date:"Jan 5, 2026",link:"https://ngenioussolutions.com/blog/category/servicenow-blogs/"},{source:"ServiceNow Community",title:"ITSM Blog: Autonomous IT and Zero-Touch Operations in 2026",desc:"Every autonomous IT story follows the same arc — but ServiceNow is pushing past the script with real agentic workflows.",date:"Mar 2026",link:"https://www.servicenow.com/community/itsm-blog/bg-p/it-service-management-blog"}];grid.innerHTML=articles.map(function(a){return"<a class='news-card' href='"+a.link+"' target='_blank' rel='noopener'><div class='news-source'>"+a.source+"</div><div class='news-headline'>"+a.title+"</div><div class='news-desc'>"+a.desc+"</div><div class='news-date'>"+a.date+"</div></a>";}).join("");}
+function showPage(name){var pages=document.querySelectorAll(".page");for(var i=0;i<pages.length;i++)pages[i].classList.remove("active");document.getElementById("page-"+name).classList.add("active");var links=document.querySelectorAll(".nav-links a");for(var j=0;j<links.length;j++)links[j].classList.remove("active");var map={home:"nav-home",live:"nav-live",portal:"nav-portal",partners:"nav-partners",about:"nav-about"};if(map[name])document.getElementById(map[name]).classList.add("active");window.scrollTo({top:0,behavior:"smooth"});if(name==="live"){renderMod570();renderNews();}}
 function toggleMobileMenu(){var m=document.getElementById("mobileMenu");m.classList.toggle("open");}
 function closeMobileMenu(){document.getElementById("mobileMenu").classList.remove("open");}
-
-function renderNews(){
-  var grid=document.getElementById("newsGrid");
-  if(!grid)return;
-  var articles=[
-    {source:"ServiceNow Newsroom",title:"ServiceNow Expands Partnership with NVIDIA at GTC 2026",desc:"ServiceNow and NVIDIA announced an expanded partnership to govern the Autonomous Workforce, combining the AI Control Tower with NVIDIA Enterprise AI Factory.",date:"Mar 16, 2026",link:"https://www.servicenow.com/company/media/press-room.html"},
-    {source:"ServiceNow Community",title:"Q1 2026 Release Highlights for Risk and Resilience",desc:"The Q1 2026 release delivers meaningful advances across AI governance, integrated risk management, privacy, third-party risk, and sustainability.",date:"Mar 2026",link:"https://www.servicenow.com/community/grc-articles/q1-2026-release-highlights-for-risk-and-resilience/ta-p/3506080"},
-    {source:"ServiceNow Community",title:"ServiceNow ITSM Named #1 Best Software for IT Management by G2 in 2026",desc:"G2 has named ServiceNow ITSM the number one Best Software for IT Management Products in its 2026 Best Software Awards.",date:"Mar 2026",link:"https://www.servicenow.com/community/itsm-blog/bg-p/it-service-management-blog"},
-    {source:"The Cloud People",title:"Top Trends Every ServiceNow Platform Owner Should Know in 2026",desc:"AI is moving beyond summarizing tickets into agentic workflows where it can take action within defined guardrails. Platform owners face rising expectations in 2026.",date:"Feb 26, 2026",link:"https://www.thecloudpeople.com/blog/top-trends-every-servicenow-platform-owner-should-know-in-2026"},
-    {source:"ServiceNow Newsroom",title:"ServiceNow to Announce Q1 2026 Financial Results on April 22",desc:"ServiceNow will release financial results for Q1 ended March 31, 2026, following the close of market on April 22, 2026.",date:"Apr 1, 2026",link:"https://www.businesswire.com/news/home/20260401416571/en/ServiceNow-to-Announce-First-Quarter-2026-Financial-Results-on-April-22"},
-    {source:"Constellation Research",title:"ServiceNow Acquires Armis for $7.75B — Top 5 Trends for 2026",desc:"ServiceNow acquired Armis to bring operational technology and IT together, enabling post-breach resilience and situational awareness across physical and digital environments.",date:"Dec 24, 2025",link:"https://www.constellationr.com/blog-news/news-analysis-servicenow-buys-armis-top-5-trends-2026-0"},
-    {source:"NGenious Solutions",title:"ServiceNow Change Management: Reducing Risk in 2026",desc:"ServiceNow Change Management reduces risk and service disruptions through structured workflows, risk assessment tools, and impact analysis for modern enterprises.",date:"Jan 15, 2026",link:"https://ngenioussolutions.com/blog/category/servicenow-blogs/"},
-    {source:"NGenious Solutions",title:"End-to-End Workflow Automation Across IT, HR and Security",desc:"ServiceNow offers end-to-end workflow automation across IT, HR, security, governance, and development operations with ITSM, ITOM, and CMDB as the foundation.",date:"Jan 5, 2026",link:"https://ngenioussolutions.com/blog/category/servicenow-blogs/"},
-    {source:"ServiceNow Community",title:"ITSM Blog: Autonomous IT and Zero-Touch Operations in 2026",desc:"Every autonomous IT story follows the same arc — but ServiceNow is pushing past the script with real agentic workflows and zero-touch service management.",date:"Mar 2026",link:"https://www.servicenow.com/community/itsm-blog/bg-p/it-service-management-blog"}
-  ];
-  grid.innerHTML=articles.map(function(a){
-    return"<a class='news-card' href='"+a.link+"' target='_blank' rel='noopener'><div class='news-source'>"+a.source+"</div><div class='news-headline'>"+a.title+"</div><div class='news-desc'>"+a.desc+"</div><div class='news-date'>"+a.date+"</div></a>";
-  }).join("");
-}
-
 renderSal();renderRates();renderCerts();renderLoc();renderChart();
 </script>
 </body>
