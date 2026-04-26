@@ -746,12 +746,12 @@ async function doApply(inputId, msgId) {
     var res = await sb.from('access_requests').insert([{ email: email, status: 'pending' }]);
     if (res.error && res.error.code === '23505') {
       msgEl.style.color = 'var(--teal)';
-      msgEl.textContent = 'You're already on the list. We'll be in touch.';
+      msgEl.textContent = "You're already on the list. We'll be in touch.";
     } else if (res.error) {
       throw res.error;
     } else {
       msgEl.style.color = 'var(--teal)';
-      msgEl.textContent = '✓ Application received. We'll reach out shortly.';
+      msgEl.textContent = "✓ Application received. We'll reach out shortly.";
       document.getElementById(inputId).value = '';
     }
   } catch (e) {
@@ -812,7 +812,7 @@ async function doGearSubmit() {
     var res = await sb.from('access_requests').insert([payload]);
     if (res.error) throw res.error;
     msgEl.style.color = 'var(--teal)';
-    msgEl.textContent = '✓ Order request received. We'll be in touch within 48 hours.';
+    msgEl.textContent = "✓ Order request received. We'll be in touch within 48 hours.";
   } catch (e) {
     msgEl.style.color = '#ff6b6b';
     msgEl.textContent = 'Something went wrong. Please try again.';
