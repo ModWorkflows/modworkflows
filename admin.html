@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ModWorkflows Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0d0d;
+      --surface:  #141414;
+      --border:   #222;
+      --text:     #e8e8e8;
+      --muted:    #666;
+      --green:    #00c27a;
+      --green-dim:#003d26;
+      --red:      #e0455a;
+      --red-dim:  #3d0a10;
+      --yellow:   #f5a623;
+      --yellow-dim:#3d2800;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 32px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .logo { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+    .logo span { color: var(--green); }
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 99px;
+      background: var(--green-dim);
+      color: var(--green);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* ── STATS ── */
+    .stats {
+      display: flex;
+      gap: 16px;
+      padding: 24px 32px 0;
+    }
+    .stat-card {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 22px;
+    }
+    .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+    .stat-value { font-size: 28px; font-weight: 700; }
+    .stat-value.green { color: var(--green); }
+    .stat-value.yellow { color: var(--yellow); }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      padding: 24px 32px 0;
+    }
+    .tab {
+      padding: 8px 18px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--muted);
+      border: 1px solid transparent;
+      transition: all 0.15s;
+      background: none;
+      font-size: 14px;
+    }
+    .tab:hover { color: var(--text); background: var(--surface); }
+    .tab.active { color: var(--green); background: var(--green-dim); border-color: #00c27a33; }
+
+    /* ── PANEL ── */
+    .panel { display: none; padding: 20px 32px 40px; }
+    .panel.active { display: block; }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .toolbar h2 { font-size: 16px; font-weight: 600; }
+    .refresh-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 13px;
+      transition: border-color 0.15s;
+    }
+    .refresh-btn:hover { border-color: var(--green); color: var(--green); }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      background: #111;
+    }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #181818; }
+    tbody td { padding: 13px 16px; vertical-align: middle; }
+
+    /* ── STATUS PILLS ── */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 99px;
+      text-transform: capitalize;
+    }
+    .pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+    .pill.pending  { background: var(--yellow-dim); color: var(--yellow); }
+    .pill.pending::before  { background: var(--yellow); }
+    .pill.approved { background: var(--green-dim);  color: var(--green);  }
+    .pill.approved::before { background: var(--green); }
+    .pill.rejected { background: var(--red-dim);    color: var(--red);    }
+    .pill.rejected::before { background: var(--red); }
+    .pill.admin    { background: #1a0a3d; color: #a78bfa; }
+    .pill.admin::before    { background: #a78bfa; }
+    .pill.member   { background: #111; color: var(--muted); }
+    .pill.member::before   { background: var(--muted); }
+
+    /* ── ACTION BUTTONS ── */
+    .actions { display: flex; gap: 8px; }
+    .btn {
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-approve { background: var(--green-dim); color: var(--green); border-color: #00c27a33; }
+    .btn-approve:hover { background: var(--green); color: #000; }
+    .btn-reject  { background: var(--red-dim);   color: var(--red);   border-color: #e0455a33; }
+    .btn-reject:hover  { background: var(--red);   color: #fff; }
+    .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    /* ── EMPTY STATE ── */
+    .empty {
+      text-align: center;
+      padding: 48px 0;
+      color: var(--muted);
+    }
+    .empty-icon { font-size: 32px; margin-bottom: 10px; }
+
+    /* ── LOADING ── */
+    .loading {
+      text-align: center;
+      padding: 48px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border: 2px solid var(--border);
+      border-top-color: var(--green);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-size: 13px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      transition: opacity 0.3s;
+      opacity: 0;
+      pointer-events: none;
+      max-width: 320px;
+    }
+    #toast.show { opacity: 1; }
+    #toast.success { border-color: var(--green); color: var(--green); }
+    #toast.error   { border-color: var(--red);   color: var(--red);   }
+
+    /* ── DATE ── */
+    .date { color: var(--muted); font-size: 12px; }
+    .email-cell { font-weight: 500; }
+    .notes-cell { color: var(--muted); font-size: 12px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* ── PASSWORD GATE ── */
+    #gate {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #0d0d0d;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #gate.hidden { display: none; }
+    .gate-box {
+      background: #141414; border: 1px solid #222; border-radius: 14px;
+      padding: 2.5rem 2rem; width: 340px; text-align: center;
+    }
+    .gate-logo { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+    .gate-logo span { color: #8b5cf6; }
+    .gate-sub { font-size: 12px; color: #555; margin-bottom: 2rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .gate-input {
+      width: 100%; padding: 11px 14px; background: #0d0d0d;
+      border: 1px solid #2a2a2a; border-radius: 8px;
+      color: #e8e8e8; font-size: 14px; outline: none;
+      transition: border-color 0.2s; margin-bottom: 0.75rem;
+    }
+    .gate-input:focus { border-color: #8b5cf6; }
+    .gate-input.shake {
+      animation: shake 0.35s ease;
+      border-color: #e0455a;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-8px); }
+      40%      { transform: translateX(8px); }
+      60%      { transform: translateX(-5px); }
+      80%      { transform: translateX(5px); }
+    }
+    .gate-btn {
+      width: 100%; padding: 11px; background: #8b5cf6; color: #fff;
+      border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .gate-btn:hover { opacity: 0.85; }
+    .gate-err { font-size: 12px; color: #e0455a; margin-top: 0.6rem; min-height: 16px; }
+  </style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-logo"><span>Mod</span>Workflows</div>
+    <div class="gate-sub">Admin Access</div>
+    <input type="password" id="gateInput" class="gate-input" placeholder="Enter password"
+      onkeydown="if(event.key==='Enter')checkPassword()">
+    <button class="gate-btn" onclick="checkPassword()">Unlock</button>
+    <div class="gate-err" id="gateErr"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const HASH = 'e992d45e201d5d591022b233b328962bc4794af3752016e75eef39b5a71ce5cd';
+  if (sessionStorage.getItem('mw_admin_auth') === HASH) {
+    document.getElementById('gate').classList.add('hidden');
+  }
+  window.checkPassword = async function() {
+    const val = document.getElementById('gateInput').value;
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(val));
+    const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    if (hex === HASH) {
+      sessionStorage.setItem('mw_admin_auth', HASH);
+      document.getElementById('gate').classList.add('hidden');
+    } else {
+      const inp = document.getElementById('gateInput');
+      inp.classList.add('shake');
+      document.getElementById('gateErr').textContent = 'Incorrect password.';
+      inp.value = '';
+      setTimeout(() => inp.classList.remove('shake'), 400);
+    }
+  };
+})();
+</script>
+
+<header>
+  <div class="logo">Mod<span>Workflows</span> <span style="color:var(--muted);font-weight:400;margin-left:6px;">Admin</span></div>
+  <div class="badge">Private</div>
+</header>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat-card">
+    <div class="stat-label">Total Requests</div>
+    <div class="stat-value" id="stat-total">—</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Pending Review</div>
+    <div class="stat-value yellow" id="stat-pending">—</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Approved</div>
+    <div class="stat-value green" id="stat-approved">—</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Signed Up Members</div>
+    <div class="stat-value green" id="stat-members">—</div>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('requests')">Access Requests</button>
+  <button class="tab" onclick="switchTab('members')">Members</button>
+</div>
+
+<!-- Access Requests Panel -->
+<div id="panel-requests" class="panel active">
+  <div class="toolbar">
+    <h2>Access Requests</h2>
+    <button class="refresh-btn" onclick="loadRequests()">&#8635; Refresh</button>
+  </div>
+  <div class="table-wrap">
+    <div id="requests-loading" class="loading"><span class="spinner"></span>Loading&#8230;</div>
+    <table id="requests-table" style="display:none">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Notes</th>
+          <th>Submitted</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="requests-body"></tbody>
+    </table>
+    <div id="requests-empty" class="empty" style="display:none">
+      <div class="empty-icon">&#128237;</div>
+      No access requests yet
+    </div>
+  </div>
+</div>
+
+<!-- Members Panel -->
+<div id="panel-members" class="panel">
+  <div class="toolbar">
+    <h2>Signed-Up Members</h2>
+    <button class="refresh-btn" onclick="loadMembers()">&#8635; Refresh</button>
+  </div>
+  <div class="table-wrap">
+    <div id="members-loading" class="loading"><span class="spinner"></span>Loading&#8230;</div>
+    <table id="members-table" style="display:none">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Approved</th>
+          <th>Joined</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="members-body"></tbody>
+    </table>
+    <div id="members-empty" class="empty" style="display:none">
+      <div class="empty-icon">&#128100;</div>
+      No members yet
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  const SUPABASE_URL      = 'https://lxynibuiuavstnfthexr.supabase.co';
+  const SUPABASE_SERVICE  = 'sb_secret_Sq6vIKdYZJQY-IcgVy2Niw_U3q465RX';
+
+  const { createClient } = supabase;
+  const db = createClient(SUPABASE_URL, SUPABASE_SERVICE, {
+    auth: { autoRefreshToken: false, persistSession: false }
+  });
+
+  function switchTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('panel-' + name).classList.add('active');
+    if (name === 'requests') loadRequests();
+    if (name === 'members')  loadMembers();
+  }
+
+  let toastTimer;
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'show ' + type;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.className = '', 3000);
+  }
+
+  function fmt(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      + ' ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  }
+
+  async function loadRequests() {
+    document.getElementById('requests-loading').style.display = 'block';
+    document.getElementById('requests-table').style.display   = 'none';
+    document.getElementById('requests-empty').style.display   = 'none';
+
+    const { data, error } = await db
+      .from('access_requests')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    document.getElementById('requests-loading').style.display = 'none';
+
+    if (error) { showToast('Error loading requests: ' + error.message, 'error'); return; }
+
+    document.getElementById('stat-total').textContent    = data.length;
+    document.getElementById('stat-pending').textContent  = data.filter(r => r.status === 'pending').length;
+    document.getElementById('stat-approved').textContent = data.filter(r => r.status === 'approved').length;
+
+    if (!data.length) {
+      document.getElementById('requests-empty').style.display = 'block';
+      return;
+    }
+
+    const tbody = document.getElementById('requests-body');
+    tbody.innerHTML = data.map(r => `
+      <tr id="row-${r.id}">
+        <td class="email-cell">${r.email}</td>
+        <td><span class="pill ${r.status}">${r.status}</span></td>
+        <td class="notes-cell" title="${r.notes || ''}">${r.notes || '—'}</td>
+        <td class="date">${fmt(r.created_at)}</td>
+        <td>
+          <div class="actions">
+            <button class="btn btn-approve" onclick="setStatus('${r.id}','approved')"
+              ${r.status === 'approved' ? 'disabled' : ''}>Approve</button>
+            <button class="btn btn-reject"  onclick="setStatus('${r.id}','rejected')"
+              ${r.status === 'rejected' ? 'disabled' : ''}>Reject</button>
+          </div>
+        </td>
+      </tr>`).join('');
+
+    document.getElementById('requests-table').style.display = 'table';
+  }
+
+  async function setStatus(id, status) {
+    const { error } = await db
+      .from('access_requests')
+      .update({ status })
+      .eq('id', id);
+
+    if (error) { showToast('Error: ' + error.message, 'error'); return; }
+    showToast('Request marked as ' + status + '.');
+    loadRequests();
+  }
+
+  async function loadMembers() {
+    document.getElementById('members-loading').style.display = 'block';
+    document.getElementById('members-table').style.display   = 'none';
+    document.getElementById('members-empty').style.display   = 'none';
+
+    const { data, error } = await db
+      .from('profiles')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    document.getElementById('members-loading').style.display = 'none';
+
+    if (error) { showToast('Error loading members: ' + error.message, 'error'); return; }
+
+    document.getElementById('stat-members').textContent = data.length;
+
+    if (!data.length) {
+      document.getElementById('members-empty').style.display = 'block';
+      return;
+    }
+
+    const tbody = document.getElementById('members-body');
+    tbody.innerHTML = data.map(m => `
+      <tr>
+        <td class="email-cell">${m.email}</td>
+        <td><span class="pill ${m.role}">${m.role}</span></td>
+        <td><span class="pill ${m.approved ? 'approved' : 'pending'}">${m.approved ? 'Yes' : 'No'}</span></td>
+        <td class="date">${fmt(m.created_at)}</td>
+        <td>
+          <div class="actions">
+            ${m.role !== 'admin' ? `<button class="btn btn-approve" onclick="makeAdmin('${m.id}')">Make Admin</button>` : '<span style="color:var(--muted);font-size:12px;">Admin</span>'}
+            ${!m.approved ? `<button class="btn btn-approve" onclick="approveProfile('${m.id}')">Approve</button>` : ''}
+          </div>
+        </td>
+      </tr>`).join('');
+
+    document.getElementById('members-table').style.display = 'table';
+  }
+
+  async function makeAdmin(id) {
+    const { error } = await db.from('profiles').update({ role: 'admin', approved: true }).eq('id', id);
+    if (error) { showToast('Error: ' + error.message, 'error'); return; }
+    showToast('User promoted to admin.');
+    loadMembers();
+  }
+
+  async function approveProfile(id) {
+    const { error } = await db.from('profiles').update({ approved: true }).eq('id', id);
+    if (error) { showToast('Error: ' + error.message, 'error'); return; }
+    showToast('Member approved.');
+    loadMembers();
+  }
+
+  loadRequests();
+  loadMembers();
+</script>
+</body>
+</html>
