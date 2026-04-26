@@ -618,10 +618,10 @@ textarea.form-input{resize:vertical;min-height:90px;}
       <div class="form-divider">Your Design</div>
       <div class="form-field" style="margin-bottom:1rem;">
         <label class="form-label">Logo / Design Upload</label>
-        <div class="upload-zone">
-          <div class="upload-icon">📎</div>
-          <div class="upload-text"><strong>Click to upload</strong> your logo or design file</div>
-          <div class="upload-text" style="margin-top:4px;font-size:11px;">PNG, SVG, AI, PDF &#183; Max 20MB</div>
+        <div class="upload-zone" onclick="document.getElementById('gearFileInput').click()">
+          <input type="file" id="gearFileInput" accept=".png,.jpg,.jpeg,.svg,.ai,.pdf,.eps" style="display:none" onchange="handleFileSelect(this)"><div class="upload-icon" id="uploadIcon">📎</div>
+          <div class="upload-text" id="uploadText"><strong>Click to upload</strong> your logo or design file</div>
+          <div class="upload-text" id="uploadSubtext" style="margin-top:4px;font-size:11px;">PNG, SVG, AI, PDF &#183; Max 20MB</div>
         </div>
       </div>
       <div class="form-field" style="margin-bottom:1rem;">
@@ -782,7 +782,7 @@ async function doSignIn() {
   }
 }
 
-async function doGearSubmit() {
+function handleFileSelect(input){if(input.files&&input.files[0]){var f=input.files[0];document.getElementById('uploadIcon').textContent='✓';document.getElementById('uploadText').innerHTML='<strong style="color:var(--teal)">'+f.name+'</strong>';document.getElementById('uploadSubtext').textContent=(f.size/1024/1024).toFixed(2)+' MB — click to change';}}async function doGearSubmit() {
   var email = document.getElementById('gearEmail').value.trim();
   var msgEl = document.getElementById('gearMsg');
   if (!email || !email.includes('@')) {
@@ -805,7 +805,7 @@ async function doGearSubmit() {
         'Company: ' + document.getElementById('gearCompany').value,
         'Qty: ' + document.getElementById('gearQty').value,
         'Budget: ' + document.getElementById('gearBudget').value,
-        'Products: ' + products.join(', '),
+        'Products: ' + products.join(', '),'File: '+(document.getElementById('gearFileInput').files&&document.getElementById('gearFileInput').files[0]?document.getElementById('gearFileInput').files[0].name:'None'),
         'Notes: ' + document.getElementById('gearNotes').value
       ].join(' | ')
     };
