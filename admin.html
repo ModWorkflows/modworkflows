@@ -464,9 +464,9 @@
         <td class="date">${fmt(r.created_at)}</td>
         <td>
           <div class="actions">
-            <button class="btn btn-approve" onclick="setStatus('${r.id}','approved')"
-              ${r.status === 'approved' ? 'disabled' : ''}>Approve</button>
-            <button class="btn btn-reject"  onclick="setStatus('${r.id}','rejected')"
+            <button class="btn btn-approve" onclick="setStatus('${r.id}','approved','${r.email}')"
+              ${r.status === 'approved' ? 'disabled' : ''}>Approve &amp; Invite</button>
+            <button class="btn btn-reject"  onclick="setStatus('${r.id}','rejected','${r.email}')"
               ${r.status === 'rejected' ? 'disabled' : ''}>Reject</button>
           </div>
         </td>
