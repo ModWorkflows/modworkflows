@@ -346,10 +346,10 @@
 <div id="panel-requests" class="panel active">
   <div class="toolbar">
     <h2>Access Requests</h2>
-    <button class="refresh-btn" onclick="loadRequests()">&#8635; Refresh</button>
+    <button class="refresh-btn" onclick="loadRequests()">↻ Refresh</button>
   </div>
   <div class="table-wrap">
-    <div id="requests-loading" class="loading"><span class="spinner"></span>Loading&#8230;</div>
+    <div id="requests-loading" class="loading"><span class="spinner"></span>Loading…</div>
     <table id="requests-table" style="display:none">
       <thead>
         <tr>
@@ -363,7 +363,7 @@
       <tbody id="requests-body"></tbody>
     </table>
     <div id="requests-empty" class="empty" style="display:none">
-      <div class="empty-icon">&#128237;</div>
+      <div class="empty-icon">📭</div>
       No access requests yet
     </div>
   </div>
@@ -373,10 +373,10 @@
 <div id="panel-members" class="panel">
   <div class="toolbar">
     <h2>Signed-Up Members</h2>
-    <button class="refresh-btn" onclick="loadMembers()">&#8635; Refresh</button>
+    <button class="refresh-btn" onclick="loadMembers()">↻ Refresh</button>
   </div>
   <div class="table-wrap">
-    <div id="members-loading" class="loading"><span class="spinner"></span>Loading&#8230;</div>
+    <div id="members-loading" class="loading"><span class="spinner"></span>Loading…</div>
     <table id="members-table" style="display:none">
       <thead>
         <tr>
@@ -390,7 +390,7 @@
       <tbody id="members-body"></tbody>
     </table>
     <div id="members-empty" class="empty" style="display:none">
-      <div class="empty-icon">&#128100;</div>
+      <div class="empty-icon">👤</div>
       No members yet
     </div>
   </div>
@@ -399,6 +399,7 @@
 <div id="toast"></div>
 
 <script>
+  // ── CONFIG ──────────────────────────────────────────────────────────────
   const SUPABASE_URL      = 'https://lxynibuiuavstnfthexr.supabase.co';
   const SUPABASE_SERVICE  = 'sb_publishable_QMEVDTBU4r7FYUSMSxX8hQ_XvSHEmbi';
 
@@ -407,6 +408,7 @@
     auth: { autoRefreshToken: false, persistSession: false }
   });
 
+  // ── TAB SWITCHING ────────────────────────────────────────────────────────
   function switchTab(name) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -416,6 +418,7 @@
     if (name === 'members')  loadMembers();
   }
 
+  // ── TOAST ────────────────────────────────────────────────────────────────
   let toastTimer;
   function showToast(msg, type = 'success') {
     const t = document.getElementById('toast');
@@ -425,6 +428,7 @@
     toastTimer = setTimeout(() => t.className = '', 3000);
   }
 
+  // ── FORMAT DATE ──────────────────────────────────────────────────────────
   function fmt(iso) {
     if (!iso) return '—';
     const d = new Date(iso);
@@ -432,6 +436,7 @@
       + ' ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
   }
 
+  // ── LOAD REQUESTS ────────────────────────────────────────────────────────
   async function loadRequests() {
     document.getElementById('requests-loading').style.display = 'block';
     document.getElementById('requests-table').style.display   = 'none';
@@ -475,17 +480,44 @@
     document.getElementById('requests-table').style.display = 'table';
   }
 
-  async function setStatus(id, status) {
+  // ── UPDATE REQUEST STATUS ────────────────────────────────────────────────
+  async function setStatus(id, status, email) {
     const { error } = await db
       .from('access_requests')
       .update({ status })
       .eq('id', id);
 
     if (error) { showToast('Error: ' + error.message, 'error'); return; }
-    showToast('Request marked as ' + status + '.');
+
+    if (status === 'approved' && email) {
+      try {
+        const resp = await fetch('/api/invite', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const result = await resp.json();
+
+        if (!resp.ok) {
+          showToast(`Approved in DB, but invite failed: ${result.error}`, 'error');
+        } else if (result.message === 'User already has an account.') {
+          showToast(`Approved. ${email} already has an account — no new invite sent.`);
+        } else {
+          showToast(`✓ Approved & invite email sent to ${email}`);
+        }
+      } catch (e) {
+        showToast(`Approved in DB, but invite request errored. Check Vercel logs.`, 'error');
+      }
+    } else if (status === 'rejected') {
+      showToast(`Request from ${email} marked as rejected.`);
+    } else {
+      showToast(`Request marked as ${status}.`);
+    }
+
     loadRequests();
   }
 
+  // ── LOAD MEMBERS ─────────────────────────────────────────────────────────
   async function loadMembers() {
     document.getElementById('members-loading').style.display = 'block';
     document.getElementById('members-table').style.display   = 'none';
@@ -525,6 +557,7 @@
     document.getElementById('members-table').style.display = 'table';
   }
 
+  // ── PROFILE ACTIONS ───────────────────────────────────────────────────────
   async function makeAdmin(id) {
     const { error } = await db.from('profiles').update({ role: 'admin', approved: true }).eq('id', id);
     if (error) { showToast('Error: ' + error.message, 'error'); return; }
@@ -539,6 +572,7 @@
     loadMembers();
   }
 
+  // ── INIT ──────────────────────────────────────────────────────────────────
   loadRequests();
   loadMembers();
 </script>
