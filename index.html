@@ -337,10 +337,35 @@ textarea.form-input{resize:vertical;min-height:90px;}
       <label class="modal-label">Email</label>
       <input type="email" class="modal-input" id="siEmail" placeholder="your@email.com"/>
     </div>
-    <button class="modal-btn" onclick="doSignIn()">Send Magic Link &#8594;</button>
+    <div class="modal-field" id="siPasswordField" style="display:none;">
+      <label class="modal-label">Password</label>
+      <input type="password" class="modal-input" id="siPassword" placeholder="Your password" onkeydown="if(event.key==='Enter')doSignIn()"/>
+    </div>
+    <button class="modal-btn" id="siSubmitBtn" onclick="doSignIn()">Send Magic Link &#8594;</button>
+    <div style="text-align:center;margin-top:0.6rem;">
+      <button id="siToggleBtn" onclick="toggleSignInMode()" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;text-decoration:underline;">Sign in with password instead</button>
+    </div>
     <div class="modal-msg" id="siMsg"></div>
     <div class="modal-divider"><span></span><small>Not a member yet?</small><span></span></div>
     <button class="modal-btn" style="background:transparent;border:1px solid var(--border);color:var(--muted);" onclick="closeSignIn();showPage('about')">Request Access &#8594;</button>
+  </div>
+</div>
+
+<!-- SET PASSWORD MODAL (shown after clicking invite link) -->
+<div class="modal-overlay" id="setPasswordModal">
+  <div class="modal">
+    <div class="modal-title">You're approved! 🎉</div>
+    <div class="modal-sub">Set a password to finish creating your account.</div>
+    <div class="modal-field">
+      <label class="modal-label">New Password</label>
+      <input type="password" class="modal-input" id="spPassword" placeholder="Choose a password" onkeydown="if(event.key==='Enter')doSetPassword()"/>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Confirm Password</label>
+      <input type="password" class="modal-input" id="spConfirm" placeholder="Confirm your password" onkeydown="if(event.key==='Enter')doSetPassword()"/>
+    </div>
+    <button class="modal-btn" onclick="doSetPassword()">Create Account &#8594;</button>
+    <div class="modal-msg" id="spMsg"></div>
   </div>
 </div>
 
@@ -760,68 +785,118 @@ async function doApply(inputId, msgId) {
   }
 }
 
+// ── Sign In ────────────────────────────────────────────────────────────────────────────────
+var siPasswordMode = false;
+
+function toggleSignInMode() {
+  siPasswordMode = !siPasswordMode;
+  var pwField   = document.getElementById('siPasswordField');
+  var submitBtn = document.getElementById('siSubmitBtn');
+  var toggleBtn = document.getElementById('siToggleBtn');
+  if (siPasswordMode) {
+    pwField.style.display = 'flex';
+    submitBtn.textContent = 'Sign In →';
+    toggleBtn.textContent = 'Send magic link instead';
+  } else {
+    pwField.style.display = 'none';
+    submitBtn.textContent = 'Send Magic Link →';
+    toggleBtn.textContent = 'Sign in with password instead';
+    document.getElementById('siPassword').value = '';
+  }
+  document.getElementById('siMsg').textContent = '';
+}
+
 async function doSignIn() {
-  var email = document.getElementById('siEmail').value.trim();
-  var msgEl = document.getElementById('siMsg');
+  var email  = document.getElementById('siEmail').value.trim();
+  var msgEl  = document.getElementById('siMsg');
   if (!email || !email.includes('@')) {
     msgEl.className = 'modal-msg err';
     msgEl.textContent = 'Please enter a valid email address.';
     return;
   }
   msgEl.className = 'modal-msg';
-  msgEl.textContent = 'Sending magic link…';
-  try {
-    var res = await sb.auth.signInWithOtp({ email: email, options: { emailRedirectTo: window.location.origin } });
-    if (res.error) throw res.error;
-    msgEl.className = 'modal-msg ok';
-    msgEl.textContent = '✓ Check your email for a sign-in link.';
-    document.getElementById('siEmail').value = '';
-  } catch (e) {
-    msgEl.className = 'modal-msg err';
-    msgEl.textContent = e.message || 'Something went wrong. Please try again.';
-  }
-}
 
-function handleFileSelect(input){if(input.files&&input.files[0]){var f=input.files[0];document.getElementById('uploadIcon').textContent='✓';document.getElementById('uploadText').innerHTML='<strong style="color:var(--teal)">'+f.name+'</strong>';document.getElementById('uploadSubtext').textContent=(f.size/1024/1024).toFixed(2)+' MB — click to change';}}async function doGearSubmit() {
-  var email = document.getElementById('gearEmail').value.trim();
-  var msgEl = document.getElementById('gearMsg');
-  if (!email || !email.includes('@')) {
-    msgEl.style.color = '#ff6b6b';
-    msgEl.textContent = 'Please enter a valid email address.';
-    return;
-  }
-  var products = [];
-  ['hoodie','zip','sweats','hat'].forEach(function(id) {
-    if (document.getElementById(id).checked) products.push(id);
-  });
-  msgEl.style.color = 'var(--muted)';
-  msgEl.textContent = 'Submitting…';
-  try {
-    var payload = {
-      email: email,
-      status: 'pending',
-      notes: [
-        'Name: ' + document.getElementById('gearFirst').value + ' ' + document.getElementById('gearLast').value,
-        'Company: ' + document.getElementById('gearCompany').value,
-        'Qty: ' + document.getElementById('gearQty').value,
-        'Budget: ' + document.getElementById('gearBudget').value,
-        'Products: ' + products.join(', '),'File: '+(document.getElementById('gearFileInput').files&&document.getElementById('gearFileInput').files[0]?document.getElementById('gearFileInput').files[0].name:'None'),
-        'Notes: ' + document.getElementById('gearNotes').value
-      ].join(' | ')
-    };
-    var res = await sb.from('access_requests').insert([payload]);
-    if (res.error) throw res.error;
-    msgEl.style.color = 'var(--teal)';
-    msgEl.textContent = "✓ Order request received. We'll be in touch within 48 hours.";
-  } catch (e) {
-    msgEl.style.color = '#ff6b6b';
-    msgEl.textContent = 'Something went wrong. Please try again.';
+  if (siPasswordMode) {
+    var password = document.getElementById('siPassword').value;
+    if (!password) {
+      msgEl.className = 'modal-msg err';
+      msgEl.textContent = 'Please enter your password.';
+      return;
+    }
+    msgEl.textContent = 'Signing in…';
+    try {
+      var res = await sb.auth.signInWithPassword({ email: email, password: password });
+      if (res.error) throw res.error;
+      msgEl.className = 'modal-msg ok';
+      msgEl.textContent = '✓ Signed in!';
+      setTimeout(function() { closeSignIn(); }, 800);
+    } catch (e) {
+      msgEl.className = 'modal-msg err';
+      msgEl.textContent = e.message || 'Invalid email or password.';
+    }
+  } else {
+    msgEl.textContent = 'Sending magic link…';
+    try {
+      var res = await sb.auth.signInWithOtp({ email: email, options: { emailRedirectTo: window.location.origin } });
+      if (res.error) throw res.error;
+      msgEl.className = 'modal-msg ok';
+      msgEl.textContent = '✓ Check your email for a sign-in link.';
+      document.getElementById('siEmail').value = '';
+    } catch (e) {
+      msgEl.className = 'modal-msg err';
+      msgEl.textContent = e.message || 'Something went wrong. Please try again.';
+    }
   }
 }
 
 function openSignIn() { document.getElementById('signInModal').classList.add('open'); }
 function closeSignIn() { document.getElementById('signInModal').classList.remove('open'); }
 document.getElementById('signInModal').addEventListener('click', function(e) { if (e.target === this) closeSignIn(); });
+
+// ── Set Password (Invite Flow) ────────────────────────────────────────────────────────────────
+async function doSetPassword() {
+  var password = document.getElementById('spPassword').value;
+  var confirm  = document.getElementById('spConfirm').value;
+  var msgEl    = document.getElementById('spMsg');
+
+  if (!password || password.length < 6) {
+    msgEl.className = 'modal-msg err';
+    msgEl.textContent = 'Password must be at least 6 characters.';
+    return;
+  }
+  if (password !== confirm) {
+    msgEl.className = 'modal-msg err';
+    msgEl.textContent = 'Passwords do not match.';
+    return;
+  }
+
+  msgEl.className = 'modal-msg';
+  msgEl.textContent = 'Setting your password…';
+
+  try {
+    var res = await sb.auth.updateUser({ password: password });
+    if (res.error) throw res.error;
+    msgEl.className = 'modal-msg ok';
+    msgEl.textContent = '✓ Account created! Welcome to ModWorkflows.';
+    history.replaceState(null, '', window.location.pathname);
+    setTimeout(function() {
+      document.getElementById('setPasswordModal').classList.remove('open');
+    }, 1500);
+  } catch (e) {
+    msgEl.className = 'modal-msg err';
+    msgEl.textContent = e.message || 'Something went wrong. Please try again.';
+  }
+}
+
+// ── Invite Detection ──────────────────────────────────────────────────────────────────────────────────
+(function checkInviteHash() {
+  var hash = window.location.hash;
+  if (hash.includes('type=invite') || hash.includes('type=recovery')) {
+    setTimeout(function() {
+      document.getElementById('setPasswordModal').classList.add('open');
+    }, 300);
+  }
+})();
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 var salaryData=[{role:"Mid-Level Developer",tag:"dev",low:100,high:120,median:110,demand:"med"},{role:"Senior Developer",tag:"dev",low:130,high:165,median:148,demand:"high"},{role:"Technical & Solution Architect",tag:"arch",low:160,high:200,median:180,demand:"high"},{role:"Senior Architect",tag:"arch",low:200,high:235,median:218,demand:"high"},{role:"Technical Consultant",tag:"consultant",low:125,high:170,median:148,demand:"med"},{role:"Business Process Consultant",tag:"consultant",low:135,high:160,median:148,demand:"high"},{role:"Engagement Manager",tag:"mgmt",low:125,high:155,median:140,demand:"low"},{role:"Business Analyst",tag:"ba",low:90,high:120,median:105,demand:"high"}];
