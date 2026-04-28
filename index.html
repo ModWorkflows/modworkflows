@@ -888,6 +888,57 @@ async function doSetPassword() {
   }
 }
 
+// ── Clothing Portal ────────────────────────────────────────────────────────────────
+function handleFileSelect(input) {
+  var file = input.files && input.files[0];
+  if (!file) return;
+  document.getElementById('uploadIcon').textContent = '✓';
+  document.getElementById('uploadText').innerHTML = '<strong>' + file.name + '</strong>';
+  document.getElementById('uploadSubtext').textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+}
+
+async function doGearSubmit() {
+  var firstName = (document.getElementById('gearFirst').value || '').trim();
+  var lastName  = (document.getElementById('gearLast').value  || '').trim();
+  var email     = (document.getElementById('gearEmail').value || '').trim();
+  var company   = (document.getElementById('gearCompany').value || '').trim();
+  var qty       = (document.getElementById('gearQty').value   || '').trim();
+  var budget    = (document.getElementById('gearBudget').value || '').trim();
+  var notes     = (document.getElementById('gearNotes').value || '').trim();
+  var msgEl     = document.getElementById('gearMsg');
+  var garmentTypes = ['hoodie','zip','sweats','hat']
+    .filter(function(id) { var el = document.getElementById(id); return el && el.checked; })
+    .map(function(id) { return { hoodie:'Hoodie', zip:'Zip-Up', sweats:'Sweatpants', hat:'Hat' }[id]; }).join(', ');
+  if (!firstName || !email) { msgEl.style.color='#e05'; msgEl.textContent='Please fill in your first name and email.'; return; }
+  if (!/S+@S+.S+/.test(email)) { msgEl.style.color='#e05'; msgEl.textContent='Please enter a valid email address.'; return; }
+  msgEl.style.color='#888'; msgEl.textContent='Submitting...';
+  var designFileUrl = '';
+  var fileInput = document.getElementById('gearFileInput');
+  if (fileInput.files && fileInput.files[0]) {
+    var file = fileInput.files[0];
+    if (file.size > 20 * 1024 * 1024) { msgEl.style.color='#e05'; msgEl.textContent='File must be under 20MB.'; return; }
+    var fileName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    var up = await sb.storage.from('designs').upload(fileName, file, { upsert: false });
+    if (up.error) { msgEl.style.color='#e05'; msgEl.textContent='File upload failed: ' + up.error.message; return; }
+    designFileUrl = sb.storage.from('designs').getPublicUrl(fileName).data.publicUrl;
+  }
+  try {
+    var resp = await fetch('/api/clothing', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName, lastName, email, company, qty, budget, garmentTypes, notes, designFileUrl })
+    });
+    var result = await resp.json();
+    if (!resp.ok) { msgEl.style.color='#e05'; msgEl.textContent=result.error||'Submission failed.'; return; }
+    ['gearFirst','gearLast','gearEmail','gearCompany','gearQty','gearBudget','gearNotes'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+    ['hoodie','zip','sweats','hat'].forEach(function(id){ var el=document.getElementById(id); if(el) el.checked=false; });
+    fileInput.value='';
+    document.getElementById('uploadIcon').textContent='📎';
+    document.getElementById('uploadText').innerHTML='<strong>Click to upload</strong> your logo or design file';
+    document.getElementById('uploadSubtext').textContent='PNG, SVG, AI, PDF · Max 20MB';
+    msgEl.style.color='#3d9970'; msgEl.textContent='✓ Request submitted! We will be in touch shortly.';
+  } catch(e) { msgEl.style.color='#e05'; msgEl.textContent='Network error. Please try again.'; }
+}
+
 // ── Invite Detection ──────────────────────────────────────────────────────────────────────────────────
 (function checkInviteHash() {
   var hash = window.location.hash;
