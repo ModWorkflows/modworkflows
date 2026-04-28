@@ -340,6 +340,7 @@
 <div class="tabs">
   <button class="tab active" onclick="switchTab('requests')">Access Requests</button>
   <button class="tab" onclick="switchTab('members')">Members</button>
+  <button class="tab" onclick="switchTab('clothing')">Clothing Orders</button>
 </div>
 
 <!-- Access Requests Panel -->
@@ -396,6 +397,28 @@
   </div>
 </div>
 
+
+<!-- Clothing Orders Panel -->
+<div id="panel-clothing" class="panel">
+  <div class="toolbar">
+    <h2>Clothing Order Requests</h2>
+    <button class="refresh-btn" onclick="loadClothing()">↻ Refresh</button>
+  </div>
+  <div class="table-wrap">
+    <div id="clothing-loading" class="loading"><span class="spinner"></span>Loading...</div>
+    <table id="clothing-table" style="display:none">
+      <thead><tr>
+        <th>Date</th><th>Name</th><th>Email</th><th>Company</th>
+        <th>Garments</th><th>MOQ</th><th>Budget</th><th>Notes</th><th>Design</th><th>Status</th>
+      </tr></thead>
+      <tbody id="clothing-body"></tbody>
+    </table>
+    <div id="clothing-empty" class="empty" style="display:none">
+      <div class="empty-icon">👕</div>No clothing submissions yet
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -416,6 +439,7 @@
     document.getElementById('panel-' + name).classList.add('active');
     if (name === 'requests') loadRequests();
     if (name === 'members')  loadMembers();
+    if (name === 'clothing') loadClothing();
   }
 
   // ── TOAST ────────────────────────────────────────────────────────────────
@@ -573,6 +597,46 @@
   }
 
   // ── INIT ──────────────────────────────────────────────────────────────────
+  
+
+  // ── CLOTHING ORDERS ───────────────────────────────────────────────────────
+  async function loadClothing() {
+    document.getElementById('clothing-loading').style.display = 'flex';
+    document.getElementById('clothing-table').style.display  = 'none';
+    document.getElementById('clothing-empty').style.display  = 'none';
+    const { data, error } = await db.from('clothing_submissions').select('*').order('created_at', { ascending: false });
+    document.getElementById('clothing-loading').style.display = 'none';
+    if (error) { showToast('Error: ' + error.message, 'error'); return; }
+    if (!data || data.length === 0) { document.getElementById('clothing-empty').style.display = 'block'; return; }
+    document.getElementById('clothing-table').style.display = 'table';
+    document.getElementById('clothing-body').innerHTML = data.map(r => {
+      const date = new Date(r.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+      const statusColor = r.status === 'new' ? '#e67e22' : '#27ae60';
+      const designCell = r.design_file_url ? '<a href="'+r.design_file_url+'" target="_blank" style="color:#6c63ff">View File</a>' : '<span style="color:#aaa">None</span>';
+      return '<tr>'
+        + '<td style="white-space:nowrap">'+date+'</td>'
+        + '<td>'+(r.first_name||'')+' '+(r.last_name||'')+'</td>'
+        + '<td>'+(r.email||'')+'</td>'
+        + '<td>'+(r.company||'--')+'</td>'
+        + '<td>'+(r.garment_types||'--')+'</td>'
+        + '<td>'+(r.qty||'--')+'</td>'
+        + '<td>'+(r.budget||'--')+'</td>'
+        + '<td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(r.notes||'--')+'</td>'
+        + '<td>'+designCell+'</td>'
+        + '<td><span style="background:'+statusColor+';color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;text-transform:uppercase">'+(r.status||'new')+'</span>'
+        + (r.status === 'new' ? ' <button onclick="markClothingReviewed(''+r.id+'')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 6px;font-size:11px;cursor:pointer">Mark Reviewed</button>' : '')
+        + '</td>'
+        + '</tr>';
+    }).join('');
+  }
+
+  async function markClothingReviewed(id) {
+    const { error } = await db.from('clothing_submissions').update({ status: 'reviewed' }).eq('id', id);
+    if (error) { showToast('Error: ' + error.message, 'error'); return; }
+    showToast('Marked as reviewed.');
+    loadClothing();
+  }
+
   loadRequests();
   loadMembers();
 </script>
